@@ -1,8 +1,6 @@
 package algo
 
-// linearSearch searches a given slice for the presence of searchValue,
-// returning the index of the found searchValue if found.
-// O(N)
+// linearSearch O(N)
 func linearSearch[T numbers](arr []T, searchValue T) int {
 	for i, value := range arr {
 		if value == searchValue {
@@ -17,9 +15,7 @@ func linearSearch[T numbers](arr []T, searchValue T) int {
 	return -1
 }
 
-// binarySearch searches a given slice for the presence of searchValue,
-// returning the index of the found searchValue if found.
-// O(log N)
+// binarySearch O(log N)
 func binarySearch[T numbers](arr []T, searchValue T) int {
 	lower := 0
 	upper := len(arr) - 1

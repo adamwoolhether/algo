@@ -46,10 +46,10 @@ This grows at approximately O(N<sup>2</sup>)
 #### Another Quadratic Example:
 ```go
 func hasDuplicateValue(arr []int) bool {
-	for i := 0; i < len(arr); i++ {
-		for j := 0; j < len(arr); j++ {
-			if i != j && arr[i] == arr[j] {
-				return true
+    for i := 0; i < len(arr); i++ {
+        for j := 0; j < len(arr); j++ {
+            if i != j && arr[i] == arr[j] {
+                return true
             }
         }       
     }
@@ -68,3 +68,23 @@ func hasDuplicateValue(arr []int) bool {
     }       
 }
 ```
+
+## Optimization
+How to compare two algorithms that seem to have the same efficiency?  
+We'll use Selection Sort, and compare it to Bubble Sort.  
+Selection sort will make one or zero swaps, compared to bubble sort which will make a swap for _each_ and every comparison
+in the worst case. Given this, Selection Sort can take about half the amount of steps as Bubble Sort, or seemingly O(N<sup>2</sup> / 2).
+Why are they the same Big O speed?
+
+👉 _Big O ignores constants._  
+For example:
+* N / 2 steps == O(N)
+* N<sup>2</sup> + 10 == O(N<sup>2</sup>)
+* 2N steps == O(N)
+* O(1000N) == O(N)
+
+👉 _Big O only cares about general categories of algorithm speed._ This ties back to the soul of Big O.
+So, when two algos fall under the same category, further analysis is needed.
+
+#### Significant steps
+We count the number of all steps in algos that fall under the same category.
