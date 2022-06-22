@@ -37,3 +37,23 @@ func selectionSort[T numbers](arr []T) []T {
 
 	return arr
 }
+
+func insertionSort[T numbers](arr []T) []T {
+	for i := 1; i < len(arr); i++ {
+		tempVal := arr[i]
+		position := i - 1
+
+		for position >= 0 {
+			if arr[position] > tempVal {
+				arr[position+1] = arr[position]
+				position--
+			} else {
+				break
+			}
+		}
+
+		arr[position+1] = tempVal
+	}
+
+	return arr
+}

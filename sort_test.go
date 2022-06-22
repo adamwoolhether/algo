@@ -46,3 +46,83 @@ func TestBubbleSortFloat(t *testing.T) {
 		})
 	}
 }
+
+func TestSelectionSortInt(t *testing.T) {
+	testCases := []struct {
+		input []int
+		exp   []int
+	}{
+		{[]int{65, 55, 45, 35, 25, 15, 10}, []int{10, 15, 25, 35, 45, 55, 65}},
+	}
+
+	for _, tc := range testCases {
+		input := fmt.Sprintf("%v", tc.input)
+		t.Run(input, func(t *testing.T) {
+			got := selectionSort(tc.input)
+			if !cmp.Equal(got, tc.exp) {
+				t.Errorf("Exp %v, got %v", tc.exp, got)
+			}
+		})
+	}
+}
+
+func TestSelectionSortFloat(t *testing.T) {
+
+	testCases := []struct {
+		input []float64
+		exp   []float64
+	}{
+		{[]float64{13, 11.7, 13.99, 11.5, 13.9, 11, 13.8}, []float64{11, 11.5, 11.7, 13, 13.8, 13.9, 13.99}},
+	}
+
+	for _, tc := range testCases {
+		input := fmt.Sprintf("%v", tc.input)
+		t.Run(input, func(t *testing.T) {
+			got := selectionSort(tc.input)
+
+			if !cmp.Equal(got, tc.exp) {
+				t.Errorf("Exp %v, got %v", tc.exp, got)
+			}
+		})
+	}
+}
+
+func TestInsertionSortInt(t *testing.T) {
+	testCases := []struct {
+		input []int
+		exp   []int
+	}{
+		{[]int{65, 55, 45, 35, 25, 15, 10}, []int{10, 15, 25, 35, 45, 55, 65}},
+	}
+
+	for _, tc := range testCases {
+		input := fmt.Sprintf("%v", tc.input)
+		t.Run(input, func(t *testing.T) {
+			got := insertionSort(tc.input)
+			if !cmp.Equal(got, tc.exp) {
+				t.Errorf("Exp %v, got %v", tc.exp, got)
+			}
+		})
+	}
+}
+
+func TestInsertionSortFloat(t *testing.T) {
+
+	testCases := []struct {
+		input []float64
+		exp   []float64
+	}{
+		{[]float64{13, 11.7, 13.99, 11.5, 13.9, 11, 13.8}, []float64{11, 11.5, 11.7, 13, 13.8, 13.9, 13.99}},
+	}
+
+	for _, tc := range testCases {
+		input := fmt.Sprintf("%v", tc.input)
+		t.Run(input, func(t *testing.T) {
+			got := insertionSort(tc.input)
+
+			if !cmp.Equal(got, tc.exp) {
+				t.Errorf("Exp %v, got %v", tc.exp, got)
+			}
+		})
+	}
+}

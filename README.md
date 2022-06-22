@@ -33,7 +33,7 @@ We can also look at it as: 8 / 2 / 2 / 2 = 1
 #### O (log N)
 Put simply: _O(log N) means the algorithm takes as many steps as it takes to keep halving the data elements until we remain with 1._
 
-## Bubble Sort - A quadratic algo
+### Bubble Sort - A quadratic algo
 ([see code example](sort.go))  
 Two significant steps:  _comparisons_ and _swaps_.  
 For N elements, we make:  
@@ -71,7 +71,7 @@ func hasDuplicateValue(arr []int) bool {
 
 ## Optimization
 How to compare two algorithms that seem to have the same efficiency?  
-We'll use Selection Sort, and compare it to Bubble Sort.  
+We'll use ([Selection Sort](sort.go)), and compare it to Bubble Sort.  
 Selection sort will make one or zero swaps, compared to bubble sort which will make a swap for _each_ and every comparison
 in the worst case. Given this, Selection Sort can take about half the amount of steps as Bubble Sort, or seemingly O(N<sup>2</sup> / 2).
 Why are they the same Big O speed?
@@ -88,3 +88,36 @@ So, when two algos fall under the same category, further analysis is needed.
 
 #### Significant steps
 We count the number of all steps in algos that fall under the same category.
+
+It's import to consider _all_ scenarios when choosing an algorithm(worst/average/best case). As an example, well compare
+Insertion Sort with selection sort.
+
+### Insertion Sort
+In the worst case, insertion sort is O(N<sup>2</sup>+N)
+* N<sup>2</sup> comparisons and shifts
+* N - 1 removals
+* N - 1 insertions  
+
+This give N<sup>2</sup> + 2N - 2 Step, which is simplified to O(N<sup>2</sup>+N) because:  
+👉 _Big O only takes into account the highest order of N when there are multiple orders added together._  
+ie: an algo with N<sup>4</sup> + N<sup>3</sup> + N<sup>2</sup> + N steps is simplified to N<sup>4</sup>.
+
+In the worst case, Selection Sort is faster than Insertion Sort. BUT, we must also consider the _**average case scenario.**_
+
+#### Average Case Scenario
+Insertion sort recap:
+* Worst-case scenario: compare and shift all data. ()
+* Best-case scenario: shift _none_ of data, making just on comparison per pass.
+* For average case, we'd probably compare and shift only half the data.
+
+#### Comparison
+
+| Algo           | Best Case         | Average Case      | Worst Case        |
+|----------------|-------------------|-------------------|-------------------|
+| Selection Sort | N<sup>2</sup> / 2 | N<sup>2</sup> / 2 | N<sup>2</sup> / 2 |
+| Insertion Sort | N                 | N<sup>2</sup> / 2 | N<sup>2</sup>     |
+
+Therefore, the better algorithm depends on the context. Both perform similarly in the average case.  
+If you can assume that the data will be _mostly_ sorted, use Insertion Sort, but if you can assume it will be mostly sorted
+in reverse, then use Selection Sort.  
+_If you don't know_, the average case applied, and both are equal.
