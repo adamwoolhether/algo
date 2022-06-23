@@ -121,3 +121,191 @@ Therefore, the better algorithm depends on the context. Both perform similarly i
 If you can assume that the data will be _mostly_ sorted, use Insertion Sort, but if you can assume it will be mostly sorted
 in reverse, then use Selection Sort.  
 _If you don't know_, the average case applied, and both are equal.
+
+## Determining Efficiency - Examples
+
+To answer the question of "if there are N data elements, how many steps will the algorithm take?":
+1. Determing what the "N" data elements are.
+2. Determine how many steps the algorithm takes to process these N values.
+
+### Mean Average of Even Numbers
+3N + 3  
+O(N)
+```go
+func averageOfEvenNumbers(arr []int) int {
+	sum := 0
+	count := 0
+	
+	for _, num := range arr {
+		if num % 2 == 0 {
+			sum += num
+			count++
+		}
+	}
+	
+	return sum / count
+}
+```
+In this example, the loop loops over each of the N elements, so it takes at least N steps.
+Inside the loop, it checks if the number is even, and if so, performs two more steps (add to sum, and increment count).  
+Big O assumes the worst case, so we say it takes 3N steps, 3 steps for each of the N numbers. Outside the loop, there are
+another 3 steps performed. Overall, it the algorithm takes a total of **3N + 3**. After ignoring constants, this is **O(N)**.
+
+### Word Builder
+3N<sup>2</sup> + 1   
+O(N<sup>2</sup>)
+```go
+func wordBuilder(arr []string) []string {
+	var collection []string
+
+	for i := 0; i < len(arr); i++ {
+		for j := 0; j < len(arr); j++ {
+			if i != j {
+				collection = append(collection, arr[i]+arr[j])
+			}
+		}
+	}
+
+	return collection
+}
+```
+If there were three nested loops, this would be O(N<sup>3</sup>)
+
+### Array Sample
+O(1)
+```go
+func sample(arr []int) (int, int, int) {
+	first := arr[0]
+	middle := arr[len(arr)/2]
+	last := arr[len(arr)-1]
+
+	return first, middle, last
+}
+```
+
+### Average Celcius Reading
+2N  
+O(N)
+```go
+func averageCelcius(fahrenheitReading []float64) float64 {
+	var celciusNumbers []float64
+
+	// Convert each reading to celsius and add to array.
+	for _, f := range fahrenheitReading {
+		celsiusConversion := (f - 32) / 1.8
+		celciusNumbers = append(celciusNumbers, celsiusConversion)
+	}
+
+	// Get sum of all Celsius numbers
+	var sum float64
+
+	for _, c := range celciusNumbers {
+		sum += c
+	}
+
+	// Return mean average
+	return sum / float64(len(celciusNumbers))
+}
+```
+
+### Clothing Labels
+5N   
+O(N)
+```go
+func markInventory(clothingItems []string) []string {
+	clothingOptions := []string{}
+
+	for _, item := range clothingItems {
+		for i := 1; i < 6; i++ {
+			clothingOptions = append(clothingOptions, fmt.Sprintf("%s Size: %d", item, i))
+		}
+	}
+	
+	return clothingOptions
+}
+```
+### Count the Ones
+O(N)  
+Inner loop only runs for as many numbers as ther are _in total_.
+```go
+func countOnes(outerArr [][]int) int {
+	count := 0
+	
+	for _, innerArray := range outerArr {
+		for _, num := range innerArray {
+			if num == 1 {
+				count++
+			}
+		}
+	}
+
+	return count
+}
+```
+
+### Palindrome Checker
+N/2 + 3  
+O(N)
+```go
+func isPalindrome(str string) bool {
+	leftIndex := 0
+	rightIndex := len(str) - 1
+
+	// Interate until left index reaches middle of the array.
+	for leftIndex < len(str)/2 {
+		if str[leftIndex] != str[rightIndex] {
+			return false
+		}
+		leftIndex++
+		rightIndex--
+	}
+
+	return true
+}
+```
+
+### Get All the Products
+N<sup>2</sup>/2  
+O(N<sup>2</sup>)
+```go
+func twoNumbers(arr []int) []int {
+	var products []int
+
+	for i := 0; i < len(arr); i++ {
+		for j := i + 1; j < len(arr); j++ {
+			products = append(products, arr[i]*arr[j])
+		}
+	}
+	
+	return products
+}
+```
+
+### Multiple Datasets
+O(N * M), where N is the size of one array and M is the size of the second.  
+O(N * M) can be thought of as in between O(N) and O(N<sup2></sup>)
+```go
+func twoNumberProducts(arr1 []int, arr2 []int) []int {
+	var products []int
+	
+	for i := 0; i < len(arr1); i++ {
+		for j := 0; j < len(arr2); j++ {
+			products = append(products, arr1[i]*arr2[j])
+		}
+	}
+	
+	return products
+}
+```
+
+### Password Cracker
+O(26<sup>N</sup>)
+
+below is in ruby
+```ruby
+def every_password(n)
+  (("a" * n)..("z" * n)).each do |str|
+    puts str
+  end
+end
+```
