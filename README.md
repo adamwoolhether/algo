@@ -330,3 +330,32 @@ A good hash table _strikes a good balance between avoiding collisions and not co
 #️⃣ **For every 7 data elements stored in the hash table, it should have 10 cells**   
 **Load Factor:** the ratio of data to cells.  
 #️⃣ _Ideal load factor:_`0.7` = `7 elements / 10 cells`
+
+## Stacks and Queues
+These are simply _arrays with restrictions_, specifically suitable for handling temporary data, with an emphasis on the _order_ data is handled.
+
+### Stacks
+A LIFO data structure.   
+Three constraints:
+* Data is inserted at the end of the stack.
+* Data is deleted from the end of the stack.
+* Only the last element can be read.
+
+_Pushing onto the stack_: inserting data.  
+_Popping from the stack_: removing data.  
+_Peaking_: reading the last element without removal.
+
+Stacks are _abstract data types_: a data structure with a theoretical set of rules revlolving around some other concrete 
+data structure.  
+Abstract data structures help prevent bugs and give us mental models to work with for a problem.
+
+### Queues
+A FIFO data structure.  
+Three constraints:
+* Data is inserted at the end of the queue.
+* Data is delete from the fron of the queue.
+* Only the first elemen can be read.
+
+_Enqueue_: inserting data.  
+_Dequeue_: removing data.  
+_Peaking_: reading the last element without removal.
