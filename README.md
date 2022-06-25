@@ -309,3 +309,24 @@ def every_password(n)
   end
 end
 ```
+
+## HashMaps
+Allow O(1) lookup speed of key-value pairs.  
+#### Hashing
+Conversion of chars into a numbers via a _hash function_.  Lookups done in two steps: 
+1. Hashing the key.
+2. Look in cell of hashmap if a value exists for the given key.
+#### Collisions
+When the two keys, after hashing, have the same number. One approach to resolve this is _separate chaining_:
+**Separate chaining**: The value becomes an array. (because of this the _worst case_ of a hash lookup is O(N), if all values get placed in the same key.)
+
+## Efficiency
+Hash table efficiency depends on:
+* Amount of data stored in the hash table
+* How many cells are available in the hash table
+* The hash function being used.    
+
+A good hash table _strikes a good balance between avoiding collisions and not consuming large amounts of memeory_  
+#️⃣ **For every 7 data elements stored in the hash table, it should have 10 cells**   
+**Load Factor:** the ratio of data to cells.  
+#️⃣ _Ideal load factor:_`0.7` = `7 elements / 10 cells`
