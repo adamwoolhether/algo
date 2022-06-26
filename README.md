@@ -359,3 +359,54 @@ Three constraints:
 _Enqueue_: inserting data.  
 _Dequeue_: removing data.  
 _Peaking_: reading the last element without removal.
+
+## Recursion
+Recursion is when a function calls itself.
+Arbitrary loop vs recursive comparison:
+```go
+// loop
+func countdown(n int) {
+	for i := n; i >= 0; i-- {
+		fmt.Println(i)
+    }
+}
+
+// recursion
+func countdown(n int) {
+    fmt.Println(n)
+	
+	if n == 0 { // The base case
+		return
+    }
+	countdown(n - 1)
+}
+```
+#### Base Case
+👉 _Base case_ is the cae in which the function _will not_ recurse. **All recursive functions** need a base case, or we encounter stack overflow.
+
+### Reading recursive code
+1. Identify the base case
+2. Walk through the function for the base case
+3. Identify the "next-to-last" case, the case just before the base case
+4. Repeat this process by identifying the case before the one you just analyzed, walking through the function for that case
+```go
+func factorial(n int) {
+    // identify the base case, the number 1
+	if n == 1 { 
+		return 1
+    }
+	
+	// the next case:
+    return n * factorial(n - 1)
+}
+```
+Walking through the above example, when n = 4:  
+`factorial(4) returns 24` == `4 * factorial(3)`  
+`factorial(3) returns 6` == `3 * factorial(2)`  
+`factorial(2) returns 2` == `2 * factorial(1)`  
+`factorial(1) returns 1` This is another way to word the base case for this func.  
+
+Simply put: `( 4 * 3 * 2 * 1) = 24`
+
+### How computers view recursion
+Func calls are places on the _call-stack_. The return value is passed up through the call stack, to the calling function.
