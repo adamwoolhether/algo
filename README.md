@@ -410,3 +410,94 @@ Simply put: `( 4 * 3 * 2 * 1) = 24`
 
 ### How computers view recursion
 Func calls are places on the _call-stack_. The return value is passed up through the call stack, to the calling function.
+
+## Writing Recursive Code
+There are a few patterns that make a problem suitable for recursion:
+
+### Repeatedly Execute
+When the goal of an algorithm is to repeatedly execute a task. The countdown example above encompasses this.
+#### Trick: passing extra parameters
+Often, having to pass a separate default parameter is cumbersome, so some languages allow a default param.  
+Go doesn't allow passing default parameters, so we use an enclosure.
+```go
+// doubleArray will double each element of a []int in place.
+func doubleArray(arr []int) {
+	index := 0
+	
+	var recurse func(arr []int, index int)
+	recurse = func(arr[]int, index int) {
+		if index == len(arr) {
+			return
+        }
+		
+		arr[index] *= 2
+		index++
+		recurse(arr, index)
+    }
+	
+	recurse(arr, index)
+}
+```
+
+### Calculations
+When the goal is to make a calculatoin based on a sub-problem of the problem at hand.  
+_Subproblem_: the very same problem applied to a smaller input.
+ex: factorials. `6! = 6 * 5 * 4 * 3 * 2 * 1`. Here, we know that factorial(6) will be multiplied by whatever factorial(5) is.
+So `factorial(6)` is the same as `6 * factorial(5)`.
+
+The factorial example above exemplifies this. In that solution, we compute the result as `n` multiplied by the subproblem `factorial(n - 1)`
+
+#### Two approaches to calculations
+#### Bottom up
+Requires passing extra params. Bottom up is the same strategy used for making loops **or** recursion; the same computational approach.
+#### Top down
+Making calculations based on the problem's subproblems. _Needs_ recursion.
+
+### Top-Down Recursion
+Allows us to mentally "kick the problem down the road.   
+We don't have to understand how the function calling works so solve the problem, as in the `return n * factorial(n - 1` statement. 
+#### Top-Down Thought Process
+1. Imagine the function you're writing has already been implemented before.
+2. Identify the subproblem of the problem.
+3. See what happens when you call the funciton on the subpoblem and go from there.
+
+#### Examples
+_Array Sum_  
+A func that sums all nums in an array. Given an array `[1, 2, 3, 4, 5]`  
+- Assume it has alraedy been implemented. 
+- Identify the subproblem: We can say the _subproblem_ is `[2, 3, 4, 5]`, all numbers except for the first. 
+- Try apply the sum func to our sub problem: `sum([2, 3, 4, 5] = 14`. Adding the first number, `1`, to the result.
+  - i.e. `return array[0] + sum(array[1:len(array)-1])`, 
+- Lastly, be sure to handle the base case! `if len(array) == 1; { return array[0] }`
+
+_String Reversal_  
+Given string `"abcde"`, the subproblem is `"bcde`.  
+Now pretend the `revers()` func already exists, so we can call `reverse("bcde")` to get `"edcb"`.  
+After that, we'd just throw `"a"` at the end.
+```go
+func reverse(s string) string {
+    if len(s) == 0 {
+        return ""
+    }
+
+    return reverse(s[1:]) + string(s[0])
+}
+```
+
+_Counting X_  
+Return the number of "x's" in a given string.  
+Given string `"axbxcxd"` it should reutnr 3. Subproblem is `"xbxcxd"`  
+We call `countX("xbxcxd")` and get 3. We would need to add 1 if the first char was "x", or just return that if not.
+```go
+func countX(str string) int {
+    if len(str) == 0 {
+        return 0
+    }
+
+    if str[0] == 'x' {
+        return 1 + countX(str[1:])
+    }
+
+    return countX(str[1:])
+}
+```
