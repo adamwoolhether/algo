@@ -17,12 +17,13 @@ _For all arrays greater than 100, the O(N) algo takes longer._
 
 
 ### Speeds
-| Big O            |  Pronounciation  | Time Complexity | Notes                   |
-|:-----------------|:----------------:|:----------------|:------------------------|
-| O(1)             |    "O of one"    | Constant time   |                         |
-| O(log N)         |   "O of log N"   | Log time        |                         |
-| O(N)             |     "O of N"     | Linear time     | O(log<sub>2</sub> N)    |
-| O(N<sup>2</sup>) | "O of N squared" | Quadratic time  | Typical of nested loops |
+| Big O            |   Pronounciation   | Time Complexity | Notes                   |
+|:-----------------|:------------------:|:----------------|:------------------------|
+| O(1)             |     "O of one"     | Constant time   |                         |
+| O(log N)         |    "O of log N"    | Log time        |                         |
+| O(N)             |      "O of N"      | Linear time     | O(log<sub>2</sub> N)    |
+| O(N<sup>2</sup>) |  "O of N squared"  | Quadratic time  | Typical of nested loops |
+| O(N!)            | "O of factorial N" | Factorial Time  |                         |
 
 ### Logarithms
 Logarithms are the inverse of _exponents_.  
@@ -501,3 +502,97 @@ func countX(str string) int {
     return countX(str[1:])
 }
 ```
+
+### The Staircase Problem
+Given a staircase of N steps, you have the ability to climb 1, 2, or 3 steps at a time. 
+How many different possible paths can someone take to reach the top?
+
+Ex:  
+Two steps - Two possible paths: `1, 1`, `2`  
+Three steps - Four possible paths: `1, 1, 1`, `1, 2`, `2, 1`, `3`  
+Four steps - Seven possible paths: `1, 1, 1, 1`, `1, 1, 2`, `1, 2, 1`, `1, 3`, `2, 1, 1`, `2, 2`, `3, 1`
+
+You can see how this would be tough without recursion for larger numbers of steps. Top-down thinking helps.  
+For 11 steps, the _subproblem_ is a 10-step staircase: Climbing 11 steps would take _at least_ as many steps as climbing a 10-step staircase.  
+But we also know someone could jump to the top from stair 9 or 8 as well.  
+Therefore: the number of steps to the top is at least the sum of all the paths to stairs 10, 9 and 8. Beyond this, you can't jump from stair 7 to 11.  
+👉 `numberOfPaths(n - 1) + numberOfPaths(n - 2) numberOfPaths(n - 3)` is the core algorithm! 
+#### Base Case
+Base case for this problem is more difficult. We could hardcode it:
+```go
+func numberOfPaths(n int) int {
+	switch {
+	case n <= 0:
+		return 0
+	case n == 1:
+		return 1
+	case n == 2:
+		return 2
+	case n == 3:
+		return 4
+	default:
+		return numberOfPaths(n -1) + numberOfPaths(n -2) + numberOfPaths(n - 3)
+	}
+}
+```
+🆒 But let's do better:
+- We know that `numberOfPaths(1)` should return one. So `if n == 1 { return 1 }`.  
+- We know `numberOfPaths(2)` should return 2, and it will compute as:
+  - `numberOfPaths(1) + numberOfPaths(0) + numberOfPaths(-1)` 
+  - Here, `numberOfPaths(1)` returns 1, so we tell `numberOfPaths(0)` to also return 1, which gives us the desired 2. ie:
+  - `if n < 0; { return 0 }` `if n == 1 || n == 0; { return 1 }`
+- We `numberOfPaths(3)` should return 4. it computes as:
+  - `numberOfPaths(2) + numberOfPaths(1) + numberOfPaths(0)` which, per above if statement, will return 4.
+```go
+func numberOfPaths(n int) int {
+	switch {
+	case n < 0:             // base case
+		return 0
+	case n == 0 || n == 1:  // also base case
+		return 1
+	default:
+		return numberOfPaths(n-1) + numberOfPaths(n-2) + numberOfPaths(n-3)
+	}
+}
+```
+
+### Anagram Generation
+Anagrams are a reordering of all chars within a string. ex: "abc", anagrams are `"abc", "acb", "bac", "bca", "cab", "cba"`  
+We could say that the subproblem of "abcd" is "abc". But how to use a func that gives us all anagrams of "abc" 
+to produce all of "abcd?".  
+```go
+func anagramsOf(str string) []string {
+	// Base case:
+	if len(str) == 1 {
+		return []string{string(str[0])}
+	}
+
+	var collection []string
+
+	substrAnagrams := anagramsOf(str[1:]) // Find all anagrams of the substring.
+
+	for _, subStrAnagram := range substrAnagrams { // Iterate over each substring.
+
+		for i := 0; i < len(subStrAnagram)+1; i++ { // Iterate over each index of the substring.
+
+			// Create a cpy of the substring, inserting the removed element once in each position
+			cpy := subStrAnagram[:i] + string(str[0]) + subStrAnagram[i:]
+
+			collection = append(collection, cpy)
+		}
+	}
+
+	return collection
+}
+```
+This introduces a new Big O Category. For three chars, a permutation starts with each of them, and each permutation picks
+the middle char from one of the two remaining chars, and it's last char from the remaining chars. This is `3 * 2 * 1`, 6 permutations.  
+For other string lengths:  
+```
+4 Chars: 4 * 3 * 2 * 1          anagrams
+5 Chars: 5 * 4 * 3 * 2 * 1      anagrams
+6 Chars: 6 * 5 * 4 * 3 * 2 * 1  anagrams
+```
+This is a **factorial** pattern.
+Given N data elements, how many steps does the algo taks? For length of N, we create `N!` anagrams.  
+This is **O(N!)**, aka _factorial time._ Very slow!
