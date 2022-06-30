@@ -596,3 +596,122 @@ For other string lengths:
 This is a **factorial** pattern.
 Given N data elements, how many steps does the algo taks? For length of N, we create `N!` anagrams.  
 This is **O(N!)**, aka _factorial time._ Very slow!
+
+## Dynamic Programming
+Dynamic programming is the process of optimizing recursve problems that have overlapping subproblems. There are two ways to do this:
+_Memoization_ and "going bottom up". First, we'll look at some inefficient recursive funcs.
+Recursion can sometimes cause excess time complexity. Example of a poorly constructed recursive func:  
+**O(2<sup>N</sup>)**
+```go
+// max finds the greates number from an arrayunc max(slice []int) int {
+func maxInefficient(slice []int) int {
+	if len(slice) == 1 {
+		return slice[0]
+	}
+
+	// Compare first element with greatest element of the remainder slice.
+	if slice[0] > maxInefficient(slice[1:]) {
+		return slice[0]
+	}
+
+	return maxInefficient(slice[1:])
+}
+```
+Here, the recursive use of max in the if statement will cause an avalanche of recursive calls. Well break it down by analyzing the "bottom call".  
+#### Max recursive walk-through
+Given an array `[1, 2, 3, 4]`:  
+`max([4])` ---up-the-call-chain---> `max(3, 4)`. Notice it again will call `max([4])` twice because `3` is not greater than the result `4`.  
+This get's even worse when we move further up the call chain. `max([1, 2, 3, 4])` would call `max` a total of 15 times.  
+
+To fix this, we store the result to a variable, and call max only once.  
+**O(N)**
+```go
+func max(slice []int) int {
+	if len(slice) == 1 {
+		return slice[0]
+	}
+
+	maxOfRemainder := max(slice[1:])
+
+	if slice[0] > maxOfRemainder {
+		return slice[0]
+	}
+
+	return maxOfRemainder
+}
+```
+Benchmarks:
+```
+cpu: Intel(R) Core(TM) i9-9880H CPU @ 2.30GHz
+BenchmarkMax-16                 80621228                13.39 ns/op
+BenchmarkMaxInefficient-16       5628093               212.1 ns/op
+```
+
+### Overlapping Subproblems
+Fibonacci adds sequence of numbers until infinity: `0, 1, 2, 3, 5, 8, 13, 21, 34, 55...`  
+Example of inefficient **O(2<sup>N</sup>** fibonacci recursion:
+```go
+func fibInefficient(n int) int {
+	if n == 0 || n == 1 {
+		return n
+	}
+
+	return fibInefficient(n-2) + fibInefficient(n-1)
+}
+```
+Because we _need_ to calculate both `fib(n - 2)` & `fib(n - 1)`, we can't just store one of the values. This is an example
+of a _overlapping subproblem_, because both `fib(n - 2)` & `fib(n - 1)` will call many of the same funcs as one another.  
+We can solve overlapping subproblems with _Memoization_.
+
+### Memoization
+Memoization reduces recursive calls by remembering previously computed functions.  
+We'll use this to store `fib` results in a hash table. `fib(3)` would get stored with the result: `{3: 2}`.  
+We do this by passing a hash table to the function.  
+O(2N)-1, or **O(N)**
+```go
+// Because this is O(2N) - 1, we can set the size of the map we give:
+// memo := make(map[int]int, 2*n-1)
+func fibMemoization(n int, memo map[int]int) int {
+	if n == 0 || n == 1 {
+		return n
+	}
+
+	if _, recorded := memo[n]; !recorded {
+		memo[n] = fibMemoization(n-2, memo) + fibMemoization(n-1, memo)
+	}
+
+	return memo[n]
+}
+```
+**NOTE**: Using a closure is both more efficient and still allows input of a single integer. see [code](dynamicProgramming.go)
+
+### Going Bottom Up
+This is simply ditching recursion and using a different approach(i.e. loop) to solve the problem. This is parts of dynamic 
+programming because it is still taking a problem that _could be_ solved recursively, and ensures duplicate calls aren't 
+made for overlapping subproblems.  
+**O(N)**
+```go
+func fibBottomUp(n int) int {
+	if n <= 1 {
+		return n
+	}
+
+	a, b := 0, 1
+	for i := 2; i <= n; i++ {
+		next := a + b
+		a = b
+		b = next
+	}
+
+	return b
+}
+```
+If you run benchmarks comparing these solutions, `fibBottomUp` is the clear winner, dramatically.
+```
+BenchmarkFibInefficient20-16               34086             34563 ns/op
+BenchmarkFibMemoization20-16              976226              1028 ns/op
+BenchmarkFib20-16                        1000000              1107 ns/op
+BenchmarkFibBottomUp20-16               100000000               11.48 ns/op
+```
+This demonstrates that bottom up is often better choice, unless recursion allows for more intuitive code and performance
+is not a factor.
