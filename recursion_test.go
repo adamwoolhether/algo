@@ -16,3 +16,15 @@ func BenchmarkAnagramOfStringsBuilder(b *testing.B) {
 		anagramsOfStringsBuilder(anagramBenchString)
 	}
 }
+
+func BenchmarkFirstX(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		firstX("abcdefghijklmnopqrstuvwxyz")
+	}
+}
+
+func BenchmarkFirstXRune(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		firstXrune("abcdefghijklmnopqrstuvwxyz")
+	}
+}

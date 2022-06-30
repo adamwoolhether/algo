@@ -115,3 +115,93 @@ func anagramsOfStringsBuilder(str string) []string {
 
 	return collection
 }
+
+// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Exercises
+
+// totalChars returns the total number of chars in a given slice of strings.
+func totalChars(strings []string) int {
+	if len(strings) == 1 {
+		return len(strings[0])
+	}
+
+	return len(strings[0]) + totalChars(strings[1:])
+}
+
+// onlyEvens returns only even integers in a slice of int
+func onlyEvens(intSlice []int) []int {
+	if len(intSlice) == 0 {
+		return nil
+	}
+
+	if intSlice[0]%2 == 0 {
+		return append(intSlice[0:1], onlyEvens(intSlice[1:])...)
+	}
+
+	return onlyEvens(intSlice[1:])
+}
+
+// triangle adds numbers, incremented by each sequence up to the given integer.
+//
+// https://en.wikipedia.org/wiki/Triangular_number
+func triangle(n int) int {
+	if n == 0 {
+		return 0
+	}
+
+	return n + triangle(n-1)
+}
+
+// firstX returns the index of the first 'x' in a given string.
+//
+// input "abcdefghijklmnopqrstuvwxyz" should return '23'
+func firstX(str string) int {
+	idx := 0
+
+	var recurse func(s string, i int) int
+	recurse = func(s string, i int) int {
+		if len(s) == 0 {
+			return -1
+		}
+
+		if s[0] == 120 {
+			return i
+		}
+		i++
+
+		return recurse(s[1:], i)
+	}
+
+	return recurse(str, idx)
+}
+
+// firstXrune is same as aboce, but uses runes. see benchmarks for comparison.
+func firstXrune(str string) int {
+	idx := 0
+
+	var recurse func(s []rune, i int) int
+	recurse = func(s []rune, i int) int {
+		if len(s) == 0 {
+			return -1
+		}
+
+		if s[0] == 'x' {
+			return i
+		}
+		i++
+
+		return recurse(s[1:], i)
+	}
+
+	return recurse([]rune(str), idx)
+}
+
+// uniquePaths calculates number of possible shortest paths needed to get from the
+// top-left to the bottom-right of a grid with a given amount of columns/rows.
+func uniquePaths(rows, columns int) int {
+	if rows == 1 || columns == 1 {
+		return 1
+	}
+
+	return uniquePaths(rows-1, columns) + uniquePaths(rows, columns-1)
+}
