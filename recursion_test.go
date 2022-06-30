@@ -28,3 +28,9 @@ func BenchmarkFirstXRune(b *testing.B) {
 		firstXrune("abcdefghijklmnopqrstuvwxyz")
 	}
 }
+
+func BenchmarkFirstXString(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		firstXString("abcdefghijklmnopqrstuvwxyz")
+	}
+}

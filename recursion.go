@@ -196,6 +196,27 @@ func firstXrune(str string) int {
 	return recurse([]rune(str), idx)
 }
 
+// firstXrune is same as aboce, but uses runes. see benchmarks for comparison.
+func firstXString(str string) int {
+	idx := 0
+
+	var recurse func(s string, i int) int
+	recurse = func(s string, i int) int {
+		if len(s) == 0 {
+			return -1
+		}
+
+		if string(s[0]) == "x" {
+			return i
+		}
+		i++
+
+		return recurse(s[1:], i)
+	}
+
+	return recurse(str, idx)
+}
+
 // uniquePaths calculates number of possible shortest paths needed to get from the
 // top-left to the bottom-right of a grid with a given amount of columns/rows.
 func uniquePaths(rows, columns int) int {
