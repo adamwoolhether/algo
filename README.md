@@ -772,6 +772,7 @@ Looking above table, number of quicksort steps for N elements is about N * log N
 | 8   | 3     | 24        | 24                        |
 | 16  | 4     | 64        | 64                        |
 | 32  | 5     | 160       | 160                       |
+
 This is **O(N log N)**, because each time we partition an array, we break it down into two subarrays: there are log N 
 halvings, and each having has a partition on all subarrays whose elements add up to N.  
 NOTE: This is an approximation, as we must conduct **O(N)** partition on the original array as well.
