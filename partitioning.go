@@ -76,6 +76,7 @@ func (s *SortableArray[T]) quicksort(leftIndex, rightIndex int) {
 	s.quicksort(pivotIndex+1, rightIndex)
 }
 
+// quickselect finds the value at the nth position of the sorted array, without having to sort the entire array.
 func (s *SortableArray[T]) quickselect(nthLowestVal, leftIndex, rightIndex int) T {
 	// Base case: subarray has one cell.
 	if rightIndex-leftIndex <= 0 {
@@ -95,6 +96,9 @@ func (s *SortableArray[T]) quickselect(nthLowestVal, leftIndex, rightIndex int) 
 	}
 }
 
+// //////////////////////////////////////////////////////////////////////////
+// hasDuplicateValue returns true if an array has a duplicate value.
+// It exemplifies the value of dealing with sorted arrays to conduct other tasks/algo.
 func hasDuplicateValue[T constraints.Ordered](input []T) bool {
 	sort.Slice(input, func(i, j int) bool { return input[i] < input[j] })
 
