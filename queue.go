@@ -12,7 +12,7 @@ type Queue struct {
 	data []any
 }
 
-func newQueue() *Queue {
+func NewQueue() *Queue {
 	return &Queue{
 		mu:   sync.RWMutex{},
 		data: []any{},
@@ -60,7 +60,7 @@ type PrintManager struct {
 }
 
 func newPrintMgr() *PrintManager {
-	return &PrintManager{queue: newQueue()}
+	return &PrintManager{queue: NewQueue()}
 }
 
 func (p *PrintManager) queuePrintJob(document string) {

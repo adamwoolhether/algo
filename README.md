@@ -797,3 +797,45 @@ see [partitioning.go](partitioning.go)
 
 ### Sorting as Key to other Algos
 Sorted arrays unlock possibilities to utilize other efficient algos. Ex: finding duplicates:
+
+## Node-Based Data Structures
+### Linked lists 
+Linked lists are similar to arrays, but can be scattered throughout the computer's memory, via _Nodes_.
+Each node contains some data and a _link_, the memory address of the next node in the list. A _head_ and a _tail_ are the first and last nodes in the list respectively.  
+Initially, only the head node of a linked list is available for immediate access. Linked lists have four classic operations: reading searching, insertion and deletion.
+
+#### Reading
+Requires following the chain of the nodes' links.  
+Worst case: O(N), must slower than array.
+see [linkedlist.go](linkedList.go) for implementation.
+#### Searching
+Also O(N) search speed, much slower than array.
+see [linkedlist.go](linkedList.go) for implementation.
+#### Insertion
+Here, linked lists have advantage over arrays _in some situations_.  
+O(1) for insertion _at the beginning_. Worst case of O(N)+1 to insert at end of list. 
+Create a new node, set it's `next node` to the current head, and change the linked list's `head` to the new node.  
+Insertion _anywhere_ is just one step, but finding the node at a specific index is  
+see [linkedlist.go](linkedList.go) for implementation.
+#### Deletion
+Speeds are the same as insertion. Deleting merely requires changing a node's link to point to the node that exists 
+after the node targeted for deletion, or changing to nil if it's the tail.  
+Note that the 'deleted' node still exists in memory, until garbage collected by GC.
+
+### Linked List Efficiency
+
+| Operation | Array               | Linked List               |
+|-----------|---------------------|---------------------------|
+| Reading   | O(1)                | O(N)                      |
+| Search    | O(N)                | O(N)                      |
+| Insertion | O(N) or O(1) at end | O(N) or O(1) at beginning |
+| Deletion  | O(N) or O(1) at end | O(N) or O(1) at beginning |
+
+The true power of a linked list is that the _actual insertion and deletion_ steps are just O(1). They're highly suitable for 
+situations when an app will comb through existing data, making insertions/deletions when needed. This is better than an array,
+which would have to move _all_ the data around to fit in a contiguous memory block.
+
+### Doubly Linked Lists
+Have two links: pointing to both the node before and after. This allows O(1) insertion time for the beginning and end of the linked list.  
+This makes them highly suitable for a _queue_.  
+See [doublyLinkedListQueue.go](doublyLinkedListQueue.go) for implementation.
