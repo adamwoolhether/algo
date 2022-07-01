@@ -106,3 +106,78 @@ func TestHasDuplicateValue(t *testing.T) {
 		})
 	}
 }
+
+func TestGreatestProductOf3(t *testing.T) {
+	testCases := []struct {
+		input []int
+		exp   int
+	}{
+		{[]int{0, 5, 2, 1, 6, 3}, 90},
+		{[]int{0, 50, 20, 10, 60, 30}, 90000},
+		{[]int{-5, -99, 0, -100, -999}, 0},
+		{[]int{-5, -99}, -1},
+	}
+
+	for _, tc := range testCases {
+		t.Run(fmt.Sprintf("input: %v", tc.input), func(t *testing.T) {
+			result := greatestProductOf3(tc.input)
+			if result != tc.exp {
+				t.Errorf("exp %d, got %d", tc.exp, result)
+			}
+		})
+	}
+}
+
+func TestFindMissingNumber(t *testing.T) {
+	testCases := []struct {
+		input []int
+		exp   int
+	}{
+		{[]int{5, 2, 4, 1, 0}, 3},
+		{[]int{9, 3, 2, 5, 6, 7, 1, 0, 4}, 8},
+		{[]int{4, 6, 8, 2, 3, 1, 5, 9, 7, 0}, -1},
+	}
+
+	for _, tc := range testCases {
+		t.Run(fmt.Sprintf("input: %v", tc.input), func(t *testing.T) {
+			if result := findMissingNumber(tc.input); result != tc.exp {
+				t.Errorf("exp %d, got %d", tc.exp, result)
+			}
+		})
+	}
+}
+
+func TestFindGreatest(t *testing.T) {
+	testCases := []struct {
+		input []int
+		exp   int
+	}{
+		{[]int{3, 7, 99, 2, 88, 2, 4}, 99},
+		{[]int{-9, 5, 2, 9, -88, 0}, 9},
+		{[]int{-99, -44, -29, -3}, -3},
+	}
+
+	for _, tc := range testCases {
+		t.Run(fmt.Sprintf("input: %v", tc.input), func(t *testing.T) {
+			if result := findGreatest1(tc.input); result != tc.exp {
+				t.Errorf("findGreatest1() exp %d, got %d", tc.exp, result)
+			}
+		})
+	}
+
+	for _, tc := range testCases {
+		t.Run(fmt.Sprintf("input: %v", tc.input), func(t *testing.T) {
+			if result := findGreatest2(tc.input); result != tc.exp {
+				t.Errorf("findGreatest2() exp %d, got %d", tc.exp, result)
+			}
+		})
+	}
+
+	for _, tc := range testCases {
+		t.Run(fmt.Sprintf("input: %v", tc.input), func(t *testing.T) {
+			if result := findGreatest3(tc.input); result != tc.exp {
+				t.Errorf("findGreatest3() exp %d, got %d", tc.exp, result)
+			}
+		})
+	}
+}

@@ -1,6 +1,6 @@
 package algo
 
-// max finds the greatest number from an array {
+// max finds the greatest number from an array
 func max(slice []int) int {
 	if len(slice) == 1 {
 		return slice[0]

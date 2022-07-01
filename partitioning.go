@@ -112,3 +112,72 @@ func hasDuplicateValue[T constraints.Ordered](input []T) bool {
 
 	return false
 }
+
+// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Exercises
+
+// greatestProductOf3 returns the greatest product of any three numbers in an array.
+func greatestProductOf3(input []int) int {
+	l := len(input)
+	if l < 3 {
+		return -1
+	}
+	sort.Slice(input, func(i, j int) bool { return input[i] < input[j] })
+
+	return input[l-1] * input[l-2] * input[l-3]
+}
+
+// findMissingNumber determines if a number is missing in a slice that beings with 0
+func findMissingNumber(input []int) int {
+	sort.Slice(input, func(i, j int) bool { return input[i] < input[j] })
+
+	for i := range input {
+		if input[i] != i {
+			return i
+		}
+	}
+
+	return -1
+}
+
+// O(N^2) implementation
+func findGreatest1(input []int) int {
+	greatest := input[0]
+
+	for i := 1; i < len(input); i++ {
+		isGreatest := true
+		greatest = input[i]
+
+		for j := 2; j < len(input); j++ {
+			if greatest < input[j] {
+				isGreatest = false
+			}
+		}
+
+		if isGreatest {
+			break
+		}
+	}
+
+	return greatest
+}
+
+// ON(N log N) implementation
+func findGreatest2(input []int) int {
+	sort.Slice(input, func(i, j int) bool { return input[i] < input[j] })
+
+	return input[len(input)-1]
+}
+
+// O(N) implementation.
+func findGreatest3(input []int) int {
+	greatest := input[0]
+
+	for i := 1; i < len(input); i++ {
+		if input[i] > greatest {
+			greatest = input[i]
+		}
+	}
+
+	return greatest
+}
