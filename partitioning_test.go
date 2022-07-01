@@ -23,7 +23,7 @@ func TestMain(m *testing.M) {
 	m.Run()
 }
 
-func TestQuickSort(t *testing.T) {
+func TestQuicksort(t *testing.T) {
 	testCases := []struct {
 		input []int
 		exp   []int
@@ -47,7 +47,7 @@ func TestQuickSort(t *testing.T) {
 }
 
 // gotest -bench QuickSort -benchtime=100000x -run=^$
-func BenchmarkQuickSort(b *testing.B) {
+func BenchmarkQuicksort(b *testing.B) {
 	slice := ints[0:10]
 	sortArray := newSortableArray(slice)
 	b.ResetTimer()
@@ -57,7 +57,7 @@ func BenchmarkQuickSort(b *testing.B) {
 	}
 }
 
-func BenchmarkQuickSortNative(b *testing.B) {
+func BenchmarkQuicksortNative(b *testing.B) {
 	slice := ints[0:10]
 	b.ResetTimer()
 
