@@ -82,23 +82,17 @@ func (s *SortableArray[T]) quickselect(nthLowestVal, leftIndex, rightIndex int) 
 		return s.data[leftIndex]
 	}
 
-	// Partition the array and get pivot index.
-	pivotIndex := s.partition(leftIndex, rightIndex)
-
-	// If our desired target is to the left of the pivot.
-	if nthLowestVal < pivotIndex {
+	switch pivotIndex := s.partition(leftIndex, rightIndex); { // Partition the array and get pivot index.
+	case nthLowestVal < pivotIndex: // If our desired target is to the left of the pivot.
 		// Recursively quickselect on subarray to left of pivot.
 		return s.quickselect(nthLowestVal, leftIndex, pivotIndex-1)
-	}
-	// If our desired target is to the right of the pivot.
-	if nthLowestVal > pivotIndex {
+	case nthLowestVal > pivotIndex: // If our desired target is to the right of the pivot.
 		// Recursively quickselect on subarray to right of pivot.
 		return s.quickselect(nthLowestVal, pivotIndex+1, rightIndex)
+	default: // nthLowestVal == pivotIndex
+		// If desired target is the same as pivot index after partition, we've found the target.
+		return s.data[pivotIndex]
 	}
-
-	// nthLowestVal == pivotIndex
-	// If desired target is the same as pivot index after partition, we've found the target.
-	return s.data[pivotIndex]
 }
 
 func hasDuplicateValue[T constraints.Ordered](input []T) bool {
