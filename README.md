@@ -715,3 +715,85 @@ BenchmarkFibBottomUp20-16               100000000               11.48 ns/op
 ```
 This demonstrates that bottom up is often better choice, unless recursion allows for more intuitive code and performance
 is not a factor.
+
+## Speedy Recursive Algorithms
+_Quicksort_ is an efficient sorting algorithm that many programming languages implement, it's very efficient for average scenarios and
+performs similarly to Insertion Sort and Selection sort in worse case scenarios. It relies on _partitioning_.
+
+### Partitioning
+To take a random value from an array, called a _pivot_, every `N < pivot` is placed to the left of the pivot, and `N > pivot`
+is placed to the right. Ex:  
+Given array `[0, 5, 2, 1, 6, 3]`, we choose the rightmost value, `3` as the pivot. We assign two pointers, one to the leftmost value
+and one to the rightmost value(excluding the pivot). `0` and `6` are the two pointers in this example.
+1. Left pointer moves right until a value >= pivot is reached.
+2. Right pointer moves left until a value <= pivot is reached.
+3. If left pointer has reached or gone beyond the right pointer, go to step 4. Otherwise, swap values that left & right pointers point to and repeat steps 1-3.
+4. Swap the pivot with the value that the left pointer is currently pointing too.
+
+#### Code Implementation: Partitioning
+see [partitioning.go](partitioning.go)
+
+### QuickSort
+A combination of partitions and recursion. Conducts the following steps:
+1. Partition the array.
+2. Treat subarrays to left/right of the pivot as their own array & recursively repeat steps 1 & 2.
+3. If subarray has 0 or 1 elements, this is the _basecase_.
+
+#### Code Implementation: Quicksort
+see [partitioning.go](partitioning.go)
+
+### Quicksort Efficiency
+First, determine efficiency of a _**single**_ partition:  
+A partition has two primary steps:
+* Comparisons: compare each of the values to the pivot. 
+  * _At least_ N comparisons.
+* Swaps: potentially swap values pointed to by left & right pointers
+  * Depends on how input data is sorted. _At most_ N / 2 swaps per each partition.
+  * We don't always swap. Randomly sorted input data would bring about N / 4 swaps.  
+
+On average, this gives **N comparisons and N / 4 swaps**, about 1.25 steps per element. This is **O(N)** time.  
+This is only a single partition, and quicksort may perform many.
+### Quicksort Steps
+Quicksort has a series of partitions, and each partition takes N steps for N elements of each subarray.  
+For an array of 8 elements, quicksort takes about 21 steps. 
+
+| **N** |  Quicksort steps (approx.)  |
+|-------|:---------------------------:|
+| 4     |              8              |
+| 8     |             24              |
+| 16    |             64              |
+| 32    |             120             |
+#### Big O of Quicksort
+Looking above table, number of quicksort steps for N elements is about N * log N
+
+| N   | log N | n * log N | Quicksort Steps (approx.) |
+|-----|-------|-----------|---------------------------|
+| 4   | 2     | 8         | 8                         |
+| 8   | 3     | 24        | 24                        |
+| 16  | 4     | 64        | 64                        |
+| 32  | 5     | 160       | 160                       |
+This is **O(N log N)**, because each time we partition an array, we break it down into two subarrays: there are log N 
+halvings, and each having has a partition on all subarrays whose elements add up to N.  
+NOTE: This is an approximation, as we must conduct **O(N)** partition on the original array as well.
+#### Quicksort Worst Case Scenario
+Best case: when pivot ends up in the middle of the subarray after partition, which generally occurs when the array values
+are adequately mixed.  
+The _worst case_ is when the pivot always ends up on one side, ie if the input is already a perfectly sorted array.  
+**O(N<sup>2</sup>)** worst case time complexity.
+#### Quicksort vs Insertion Sort
+
+|                | Best Case  | Average Case    | Worst Case      |
+|----------------|------------|-----------------|-----------------|
+| Insertion Sort | O(N)       | O(N<sup>2</sup> | O(N<sup>2</sup> |
+| Quicksort      | O(N log N) | O(N log N)      | O(N<sup>2</sup> |
+
+### Quickselect
+Allows us to find certain values in an unsorted array, _without sorting it_. I.e.: finding the tenth-lowest value in an
+array, or the fifth highest, etc.  
+Quickselect also uses partitioning. We can judge the location of the target value, based on the pivot index.  
+**O(N)** for average scenarios. For N elements, we need `N + (N/2) + N/4) + (N/8) + ... 2` steps, which is roughly 2N steps.
+#### Code Implementation: Quickselect
+see [partitioning.go](partitioning.go)
+
+### Sorting as Key to other Algos
+Sorted arrays unlock possibilities to utilize other efficient algos. Ex: finding duplicates:
