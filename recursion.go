@@ -12,9 +12,9 @@ func reverse(s string) string {
 	return reverse(s[1:]) + string(s[0])
 }
 
-func reverse2(s string) string { // do some test with runes instead
+func reverse2(str string) string { // do some test with runes instead
 
-	end := len(s) - 1
+	end := len(str) - 1
 
 	var recurse func(s string, idx int) string
 	recurse = func(s string, idx int) string {
@@ -24,7 +24,7 @@ func reverse2(s string) string { // do some test with runes instead
 		return string(s[idx]) + recurse(s, idx-1)
 	}
 
-	return recurse(s, end)
+	return recurse(str, end)
 }
 
 func countX(str string) int {

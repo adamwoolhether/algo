@@ -38,36 +38,36 @@ func fibInefficient(n int) int {
 // fibMemoization implements a recursive fibonacci function with memoization
 // Because this is O(2N) - 1, we can set the size of the map we give:
 // memo := make(map[int]int, 2*n-1)
-func fibMemoization(n int, memo map[int]int) int {
-	if n == 0 || n == 1 {
-		return n
+func fibMemoization(num int, memo map[int]int) int {
+	if num == 0 || num == 1 {
+		return num
 	}
 
-	if _, recorded := memo[n]; !recorded {
-		memo[n] = fibMemoization(n-2, memo) + fibMemoization(n-1, memo)
+	if _, recorded := memo[num]; !recorded {
+		memo[num] = fibMemoization(num-2, memo) + fibMemoization(num-1, memo)
 	}
 
-	return memo[n]
+	return memo[num]
 }
 
 // fib also uses memoization and a closure to run recursion.
-func fib(n int) int {
-	memo := make(map[int]int, 2*n-1)
+func fib(number int) int {
+	memo := make(map[int]int, 2*number-1)
 
-	var recurse func(num int, mem map[int]int) int
-	recurse = func(num int, mem map[int]int) int {
-		if num == 0 || num == 1 {
-			return num
+	var recurse func(n int, mem map[int]int) int
+	recurse = func(n int, mem map[int]int) int {
+		if n == 0 || n == 1 {
+			return n
 		}
 
-		if _, recorded := mem[num]; !recorded {
-			mem[num] = recurse(num-2, mem) + recurse(num-1, mem)
+		if _, recorded := mem[n]; !recorded {
+			mem[n] = recurse(n-2, mem) + recurse(n-1, mem)
 		}
 
-		return mem[num]
+		return mem[n]
 	}
 
-	return recurse(n, memo)
+	return recurse(number, memo)
 }
 
 func fibBottomUp(n int) int {
@@ -106,38 +106,38 @@ func addUntil100(ints []int) int {
 
 // golomb calculates the nth number from a "Golomb Sequence"
 // https://en.wikipedia.org/wiki/Golomb_sequence
-func golomb(n int) int {
+func golomb(number int) int {
 	memo := make(map[int]int)
 
-	var recurse func(num int, m map[int]int) int
-	recurse = func(num int, m map[int]int) int {
-		if num == 1 {
+	var recurse func(n int, mem map[int]int) int
+	recurse = func(n int, mem map[int]int) int {
+		if n == 1 {
 			return 1
 		}
 
-		if _, recorded := m[num]; !recorded {
-			m[num] = 1 + recurse(num-recurse(recurse(num-1, m), m), m)
+		if _, recorded := mem[n]; !recorded {
+			mem[n] = 1 + recurse(n-recurse(recurse(n-1, mem), mem), mem)
 		}
 
-		return m[num]
+		return mem[n]
 	}
-	return recurse(n, memo)
+	return recurse(number, memo)
 }
 
 func uniquePathsMemo(rows, columns int) int {
 	memo := make(map[[2]int]int)
 
-	var recurse func(r, c int, m map[[2]int]int) int
-	recurse = func(r, c int, m map[[2]int]int) int {
+	var recurse func(r, c int, mem map[[2]int]int) int
+	recurse = func(r, c int, mem map[[2]int]int) int {
 		if r == 1 || c == 1 {
 			return 1
 		}
 
-		if _, recorded := m[[2]int{r, c}]; !recorded {
-			m[[2]int{r, c}] = recurse(r-1, c, m) + recurse(r, c-1, m)
+		if _, recorded := mem[[2]int{r, c}]; !recorded {
+			mem[[2]int{r, c}] = recurse(r-1, c, mem) + recurse(r, c-1, mem)
 		}
 
-		return m[[2]int{r, c}]
+		return mem[[2]int{r, c}]
 	}
 
 	return recurse(rows, columns, memo)
