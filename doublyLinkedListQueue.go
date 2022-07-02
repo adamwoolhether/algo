@@ -1,5 +1,10 @@
 package algo
 
+import (
+	"fmt"
+	"io"
+)
+
 // doubleNode represents a node within a doubly-linked list. Not concurrency safe as is.
 type doubleNode struct {
 	data any
@@ -40,6 +45,15 @@ func (ll *doublyLinkedList) removeFromFront() *doubleNode {
 	ll.head = ll.head.next
 
 	return removedNode
+}
+
+func (ll *doublyLinkedList) iterateReverse(writer io.Writer) {
+	currentNode := ll.tail
+
+	for currentNode != nil {
+		fmt.Fprintf(writer, "%v\n", currentNode.data)
+		currentNode = currentNode.prev
+	}
 }
 
 // queue uses a doubly linked list as it's datastore.
