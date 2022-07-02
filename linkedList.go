@@ -108,8 +108,8 @@ func (ll *linkedList) deleteAtIndex(index int) bool {
 func (ll *linkedList) iterate(writer io.Writer) {
 	currentNode := ll.head
 
-	for i := 0; currentNode != nil; i++ {
-		fmt.Fprintf(writer, "%d: %v\n", i, currentNode.data)
+	for currentNode != nil {
+		fmt.Fprintf(writer, "%v\n", currentNode.data)
 		currentNode = currentNode.next
 	}
 }
@@ -123,4 +123,21 @@ func (ll *linkedList) tail() any {
 	}
 
 	return currentNode.data
+}
+
+// flip will reverse the elements of a linkedList.
+func (ll *linkedList) reverse() {
+	var previousNode *node
+	currentNode := ll.head
+
+	for currentNode != nil {
+		nextNode := currentNode.next
+
+		currentNode.next = previousNode
+
+		previousNode = currentNode
+		currentNode = nextNode
+	}
+
+	ll.head = previousNode
 }
