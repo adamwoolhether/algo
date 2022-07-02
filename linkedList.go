@@ -141,3 +141,10 @@ func (ll *linkedList) reverse() {
 
 	ll.head = previousNode
 }
+
+// deleteMiddleNode removes the node at the given pointer, retaining the linkedList integrity.
+// This is useful if we have only a node's memory address, and can't infer what nodes come before it.
+func (ll *linkedList) deleteMiddleNode(node *node) {
+	node.data = node.next.data
+	node.next = node.next.next
+}
