@@ -1,5 +1,10 @@
 package algo
 
+import (
+	"fmt"
+	"io"
+)
+
 type node struct {
 	data any
 	next *node
@@ -97,4 +102,25 @@ func (ll *linkedList) deleteAtIndex(index int) bool {
 	currentNode.next = nodeAfterDeletedNode
 
 	return true
+}
+
+// iterate will traverse and print all elements and their index in a linkedList to the given io.Writer.
+func (ll *linkedList) iterate(writer io.Writer) {
+	currentNode := ll.head
+
+	for i := 0; currentNode != nil; i++ {
+		fmt.Fprintf(writer, "%d: %v\n", i, currentNode.data)
+		currentNode = currentNode.next
+	}
+}
+
+// tail will return the last element of a linked list.
+func (ll *linkedList) tail() any {
+	currentNode := ll.head
+
+	for currentNode.next != nil {
+		currentNode = currentNode.next
+	}
+
+	return currentNode.data
 }
