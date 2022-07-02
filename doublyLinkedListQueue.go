@@ -1,5 +1,6 @@
 package algo
 
+// doubleNode represents a node within a doubly-linked list. Not concurrency safe as is.
 type doubleNode struct {
 	data any
 	next *doubleNode
@@ -54,8 +55,12 @@ func (q queue) enqueue(element any) {
 	q.data.insertAtEnd(element)
 }
 
-func (q queue) dequeue(element any) any {
+func (q queue) dequeue() any {
+	if q.data.head == nil {
+		return nil
+	}
 	removedNode := q.data.removeFromFront()
+
 	return removedNode.data
 }
 
