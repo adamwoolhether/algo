@@ -7,10 +7,6 @@ import (
 	"golang.org/x/exp/constraints"
 )
 
-/*
-Test duplicate values and implement better handling if needed.
-*/
-
 // treeNode represents a node in a Binary Search Tree.
 type treeNode[T constraints.Ordered] struct {
 	value      T
@@ -146,19 +142,45 @@ func (tn *treeNode[T]) FetchMax() T {
 	return tn.rightChild.FetchMax()
 }
 
-// TraverseAndPrint traverse's the entire Binary Search Tree in
-// descending order and prints the value to the given writer.
-func (tn *treeNode[T]) TraverseAndPrint(writer io.Writer) {
+// TraverseAndPrintInOrder traverse's the entire Binary Search Tree in
+//  inorder and prints the value to the given writer.
+func (tn *treeNode[T]) TraverseAndPrintInOrder(writer io.Writer) {
 	if tn == nil {
 		return
 	}
 
-	tn.leftChild.TraverseAndPrint(writer)
+	tn.leftChild.TraverseAndPrintInOrder(writer)
 	_, err := fmt.Fprintln(writer, tn.value)
 	if err != nil {
 		panic(err)
 	}
-	tn.rightChild.TraverseAndPrint(writer)
+	tn.rightChild.TraverseAndPrintInOrder(writer)
+}
+
+func (tn *treeNode[T]) TraverseAndPrintPreOrder(writer io.Writer) {
+	if tn == nil {
+		return
+	}
+
+	_, err := fmt.Fprintln(writer, tn.value)
+	if err != nil {
+		panic(err)
+	}
+	tn.leftChild.TraverseAndPrintPreOrder(writer)
+	tn.rightChild.TraverseAndPrintPreOrder(writer)
+}
+
+func (tn *treeNode[T]) TraverseAndPrintPostOrder(writer io.Writer) {
+	if tn == nil {
+		return
+	}
+
+	tn.leftChild.TraverseAndPrintPostOrder(writer)
+	tn.rightChild.TraverseAndPrintPostOrder(writer)
+	_, err := fmt.Fprintln(writer, tn.value)
+	if err != nil {
+		panic(err)
+	}
 }
 
 // /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -176,5 +198,5 @@ func (tn *treeNode[T]) TraverseAndPrint(writer io.Writer) {
 	root.Insert("Alice in Wonderland")
 	root.Insert("Alice in Wonderland")
 	root.Insert("Alice in Wonderland")
-	root.TraverseAndPrint(os.Stdout)
+	root.TraverseAndPrintInOrder(os.Stdout)
 */
