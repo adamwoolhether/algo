@@ -1,6 +1,11 @@
 package algo
 
-import "golang.org/x/exp/constraints"
+import (
+	"fmt"
+	"io"
+
+	"golang.org/x/exp/constraints"
+)
 
 /*
 Test duplicate values and implement better handling if needed.
@@ -13,8 +18,8 @@ type treeNode[T constraints.Ordered] struct {
 	rightChild *treeNode[T]
 }
 
-// newTReeNode returns a new Binary Search Tee node.
-func newTreeNode[T constraints.Ordered](value T, left, right *treeNode[T]) *treeNode[T] {
+// NewTreeNode returns a new Binary Search Tee node.
+func NewTreeNode[T constraints.Ordered](value T, left, right *treeNode[T]) *treeNode[T] {
 	return &treeNode[T]{
 		value:      value,
 		leftChild:  left,
@@ -22,47 +27,52 @@ func newTreeNode[T constraints.Ordered](value T, left, right *treeNode[T]) *tree
 	}
 }
 
-// search will find and return the node with the given value.
+// Search will find and return the node with the given value.
 // O(log N)
-func (tn *treeNode[T]) search(searchValue T) *treeNode[T] {
-	// Base case: If node is nil or matches the search value.
+func (tn *treeNode[T]) Search(searchValue T) *treeNode[T] {
+	// Base case: If node is nil or matches the Search value.
 	if tn == nil || tn.value == searchValue {
 		return tn
 	}
 
 	if searchValue < tn.value {
-		return tn.leftChild.search(searchValue)
+		return tn.leftChild.Search(searchValue)
 	}
 
 	// if searchValue > node.value
-	return tn.rightChild.search(searchValue)
+	return tn.rightChild.Search(searchValue)
 }
 
-// insert creates a node with the given value at the correct
+// Insert creates a node with the given value at the correct
 // location in a Binary Search Tree.
 // O(log N) + 1, or O(log N)
-func (tn *treeNode[T]) insert(value T) {
+func (tn *treeNode[T]) Insert(value T) {
+	// If value is already in tree, no further action is needed.
+	if tn.value == value {
+		return
+	}
+
 	if value < tn.value {
-		// If left child doesn't exist, insert the value as left child.
+		// If left child doesn't exist, Insert the value as left child.
 		if tn.leftChild == nil {
 			tn.leftChild = &treeNode[T]{value: value}
 			// return
 		} else {
-			tn.leftChild.insert(value)
+			tn.leftChild.Insert(value)
 		}
 	} else { // value > node.value
 		if tn.rightChild == nil {
 			tn.rightChild = &treeNode[T]{value: value}
 		} else {
-			tn.rightChild.insert(value)
+			tn.rightChild.Insert(value)
 		}
 	}
 }
 
-// remove deletes the node with the given value from a Binary Search Tree.
-// 'remove' is used, as 'delete' clashes with Go's 'delete' built-in.
+// Remove deletes the node with the given value from a Binary Search Tree.
+// 'Remove' is used, as 'delete' clashes with Go's 'delete' built-in.
 // O(log N)
-func (tn *treeNode[T]) remove(valueToDelete T) *treeNode[T] {
+func (tn *treeNode[T]) Remove(valueToDelete T) *treeNode[T] {
 	if tn == nil {
 		return nil
 	}
@@ -72,12 +82,12 @@ func (tn *treeNode[T]) remove(valueToDelete T) *treeNode[T] {
 	// respectively to be the return value of a recursive call of this func on the current node's
 	// left or right subtree.
 	case valueToDelete < tn.value:
-		tn.leftChild = tn.leftChild.remove(valueToDelete)
+		tn.leftChild = tn.leftChild.Remove(valueToDelete)
 		// Return the current node (and its subtree if it exists) to be
 		// used as the new value of its parent's left or right child.
 		return tn
 	case valueToDelete > tn.value:
-		tn.rightChild = tn.rightChild.remove(valueToDelete)
+		tn.rightChild = tn.rightChild.Remove(valueToDelete)
 		return tn
 	default: // valueToDelete == tn.value
 		// If the current node has no left child, delete it by returning its right child
@@ -97,7 +107,7 @@ func (tn *treeNode[T]) remove(valueToDelete T) *treeNode[T] {
 	}
 }
 
-// life finds the successor node, returning either the original right child
+// lift finds the successor node, returning either the original right child
 // passed into it, or nil if the original right child ends up as the successor
 // node, which happens if it had no left children of its own.
 func (tn *treeNode[T]) lift(nodeToDelete *treeNode[T]) *treeNode[T] {
@@ -118,8 +128,53 @@ func (tn *treeNode[T]) lift(nodeToDelete *treeNode[T]) *treeNode[T] {
 	return tn.rightChild
 }
 
+// FetchMin returns the value of the node in the minimum element position.
+func (tn *treeNode[T]) FetchMin() T {
+	if tn.leftChild == nil {
+		return tn.value
+	}
+
+	return tn.leftChild.FetchMin()
+}
+
+// FetchMax returns the value of the node in the maximum element position
+func (tn *treeNode[T]) FetchMax() T {
+	if tn.rightChild == nil {
+		return tn.value
+	}
+
+	return tn.rightChild.FetchMax()
+}
+
+// TraverseAndPrint traverse's the entire Binary Search Tree in
+// descending order and prints the value to the given writer.
+func (tn *treeNode[T]) TraverseAndPrint(writer io.Writer) {
+	if tn == nil {
+		return
+	}
+
+	tn.leftChild.TraverseAndPrint(writer)
+	_, err := fmt.Fprintln(writer, tn.value)
+	if err != nil {
+		panic(err)
+	}
+	tn.rightChild.TraverseAndPrint(writer)
+}
+
 // /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Example use case: Maintaining a list of Book titles.
 // 1. Can print the list of book title alphabetically.
 // 2. Allows for constant changes to the list.
 // 3. Allows searching for a title within the list.
+/*	root := NewTreeNode("Moby Dick", nil, nil)
+	root.Insert("The Odyssey")
+	root.Insert("Pride and Prejudice")
+	root.Insert("Robinson Crusoe")
+	root.Insert("Great Expectations")
+	root.Insert("Alice in Wonderland")
+	root.Insert("Lord of the Flies")
+	root.Insert("Alice in Wonderland")
+	root.Insert("Alice in Wonderland")
+	root.Insert("Alice in Wonderland")
+	root.TraverseAndPrint(os.Stdout)
+*/

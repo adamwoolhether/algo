@@ -895,3 +895,10 @@ until there are no more left children. This bottom value is the successor node.
 successor node's right child and turn it into the _left child of the successor node's former parent_.   
 
 Code implmentation: [binarySearchTree.go](binarySearchTree.go)
+
+### Binary Search Tree Traversal
+_Traversing_ is the act of visiting every node in a data structure. There are many ways to traverse a tree,
+we'll implement what is known as _inorder traversal_. The `traverse` method should have the following steps:
+1. Call itself recursively on the node's left child until there is no left child.
+2. "Visit" the node. Here, we'll print the title.
+3. Recursively call it's on the node's right child until there is no right child.
