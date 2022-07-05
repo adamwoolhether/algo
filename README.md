@@ -840,3 +840,58 @@ which would have to move _all_ the data around to fit in a contiguous memory blo
 Have two links: pointing to both the node before and after. This allows O(1) insertion time for the beginning and end of the linked list.  
 This makes them highly suitable for a _queue_.  
 See [doublyLinkedListQueue.go](doublyLinkedListQueue.go) for implementation.
+
+## Binary Search Trees
+Binary search trees maintain ordering and have fast search, insertion, and deletion speeds.
+
+### Trees
+A ndoe-based data structure, where each node can have links to multiple nodes. There are many kinds of tree-based data structures.
+* Root: the uppermost node.
+* Parent/children: The node immediately above/nodes immediately below.
+* Descendants/ancestors: all the nodes above/below a given node.
+* Levels: A row within a tree.
+* A tree is _balanced_ when it's nodes' subtrees have the same number of nodes in it, otherwise it is imbalanced.
+
+### Binary Search Trees
+_Binary tree_: a tree where each node has _zero, one, or two_ children.
+_Binary search tree_: a binary tree that has the following additional conditions:
+* Each node has at most one left child and one right child.
+* A node's left descendants contains values less than the node itself, and its right descendants contain values only greater than itself.    
+see [binarySearchTree.go](binarySearchTree.go) for node implementation.
+
+### Searching
+Searching within a binary search tree algorithm:
+1. Designate a node as "current node". (Initially, the root.)
+2. Inspect the value of current node.
+3. If found, return.
+4. If value is less than current node, search in its left subtree.
+5. if value is greater than current node, search in its right subtree.
+6. Repeat 1-5 until value is found or bottom of tree is reached, indicating the value isn't in the tree.
+#### Efficiency
+**O(log N)** Time Complexity in best-case scenario, for a _perfectly_ balanced search tree.  
+👉**Log(N) Levels** _If there are N nodes in a balanced binary tree, there will be about log N levels(rows)._  
+Code implmentation: [binarySearchTree.go](binarySearchTree.go)
+
+### Insertion
+**O(log N) + 1** steps  
+Insertion always takes 1 extra step beyond a search. In contrast, an ordered array takes O(N).  
+Code implmentation: [binarySearchTree.go](binarySearchTree.go)
+#### Order of Insertion
+Well-balanced trees are only created when input randomly sorted data. Sorted data can result in an imbalanced tree.  
+If it was completely-sorted, the tree would have all data on the right child, resulting in a completely linear O(N) search.  
+⚠️ It's best to first randomize data before inserting it into a tree.
+
+### Deletion
+**O(log N)**
+Deletion is the most complex operation of a binary search tree. The proper action depends on whether the node has a single, two, or no child nodes.  
+The complete algorith for deletion:
+* If the node being deleted has no children, simply delete it.
+* If the node being deleted has one child, delete the node and replace it with the child.
+If the node ebing deleted has two children, replace the node with the _successor_ node. 
+  * The _successor_ is the child node whose value is _the least of all values that are greater than the deleted node._
+  * The find the successor: visit the right child of the deleted value, then keep visiting the left child of each subsequent child
+until there are no more left children. This bottom value is the successor node.
+  * If the successor node has a right child, after plugging the successor node into the deleted node's spot, take the former 
+successor node's right child and turn it into the _left child of the successor node's former parent_.   
+
+Code implmentation: [binarySearchTree.go](binarySearchTree.go)
