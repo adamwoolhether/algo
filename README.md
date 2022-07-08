@@ -902,3 +902,89 @@ we'll implement what is known as _inorder traversal_. The `traverse` method shou
 1. Call itself recursively on the node's left child until there is no left child.
 2. "Visit" the node. Here, we'll print the title.
 3. Recursively call it's on the node's right child until there is no right child.
+
+## Heaps
+There are many types of tree data-structures, it's important to use the proper one for a given use case.
+
+### Priority Queues
+Priority queues are a list whose deletions and accesses are the same as a classic queue(front), but insertions work more
+like an ordered array. Data remains in sorted order on insertions. (Think of a hospital room, where patients in more
+critical condition will be seen first).  
+As an abstract data type, the underlying data structure is flexible. Using an array allows us to:
+* Ensure proper ordering on inserts
+* Data is removed from the end of the array(the 'front' of the array).
+
+Two primary operations:
+* Deletions; If data is array-based: O(1)
+* Insertions; If data is array-based: O(N)    
+There is another, more efficient data structure for priority queues than a sorted array...
+
+### Heaps
+Many types, we'll focus on a _binary heap_, a kind of binary tree. Binary heaps also come in two varieties: _max-heap_ & _min-heap_.  
+Examples here use a max-heap, but the implementing the other is a small difference.  
+Max-heaps have two conditions:
+* Each node's value must be greater than each of its descendants, this is the _heap condition_.
+  * Contrast this is binary search tree, where the right child will be greater than the node. "A binary serach tree doth not a heap make."
+  * A _min-heap_ would have the opposite condition: the node's value would be greater than all of its descendants.
+* The tree must be _complete_, meaning if must be completely filled with nodes.
+  * The bottom row _can_ have empty positions as no nodes are to the right of these empty positions.
+
+### Heap Properties
+* Heap-ordering is useless regarding searches, because we wouldn't know to look on the left or right of a node for a given value.  
+So, heaps are said to be _weekly ordered_, compared to binary search trees. They have _some_ order(nodes greater than both children),
+but not enough to improve time-complexity of searching. 
+* Root nodes in a max-heap will always have the greatest value (or the least, in a min-heap).
+* Twp primary ops: inserting and deleting. Optional 'read' looks at value of root node.
+* A _last node_ is the heap's rightmost node in the bottom level.
+
+### Heap Insertion
+Heap insertion involved the following algorithm: O(log N)
+1. Create new node with given value and insert it as the new _last node_. (see below)
+2. Compare the new node with its parent.
+3. If new node is greater than the parent, swap it with the parent.
+4. Repeat step 3, moving the node up the head until it's parent has a greater value, this process is called _trickling_.
+#### Looking for the Last Node
+The first step in the heap insertion algorithm requires that we find the last node. This is the "Problem of the Last Node" (see below)
+
+### Heap Deletion
+Only the root node is ever deleted, just like a priority queue.
+Algorithm for heap deletions: O(log N)
+1. Remove the root node by moving the last node where the root node was.
+2. Trickle the root node down to its proper place. This is more complex than trickling up.
+   * Check both children of the "trickle node" to see which is larger.
+   * If trickle node is smaller than larger of the two child nodes, swap the trickle not with that larger node. (Otherwise, the heap condition would be violated)
+   * Repeat steps 1 & 2 until the trickle node has no children greater than it.
+
+### Heaps vs Ordered Ararys
+|           | Ordered Array  | Heap      |
+|-----------|----------------|-----------|
+| Insertion | Slow           | Very fast |
+| Deletion  | Extremely fast | Very fast |
+Even though the heap is slightly slower at deletions, it performs very well in all, so it's the better choice for priority queues.
+
+### Problem of the Last Node
+This addresses the problem of how we find the actual last node in a heap, for insertion & deletions. Using another node
+would result in a heap that is incomplete. Completeness ensures that the heap remains _well-balanced_, and being well-balanced
+is what helps us achieve O(log N) operations.  
+So, what algorithm helps us quickly find the last node of a heap? Well, we use arrays!
+
+### Arrays as Heaps
+To solve the "Problem of the last node", heaps are usually implemented using arrays.
+```
+             0
+           /   \
+          1     2
+        /  \  /   \ 
+       3    4 5    6
+```
+The figure above demonstrates has the elements of an array can be represented as a heap.  
+With this implementation, _the last node in the heap will always be the first element of the array_, at index 0.    
+see [heap.go](heap.go) for implementation.
+
+#### Traversing an Array-Based Heap
+Moving node-to-node would be simple with a linked list, how to do so with an array?  
+Assigning index's of the heap's nodes, as shown above, means the traits of a heap are always true:
+* To find the left child, use this formula: `(index * 2) + 1`
+* To find the right child, use this formula: `(index * 2) + 2`
+* To find a node's parent, use this formula: `(index - 1) / 2`
+Go ahead and try it out with the above example!
