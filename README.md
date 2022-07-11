@@ -988,3 +988,8 @@ Assigning index's of the heap's nodes, as shown above, means the traits of a hea
 * To find the right child, use this formula: `(index * 2) + 2`
 * To find a node's parent, use this formula: `(index - 1) / 2`
 Go ahead and try it out with the above example!
+
+### Bonus: Heapsort
+Heapsort is a sorting algorithm in which all values are inserted into the heap, and then popped out. A max-heap would
+return values in _descending order_, and a min-heap would return values in _ascending order_.  
+This would give us a sort algorithm in O(N log N).
