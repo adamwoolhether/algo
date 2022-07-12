@@ -65,7 +65,7 @@ func (t *trie) Insert(word string) {
 	currentNode.children['*'] = nil
 }
 
-// CollectAllWords returns a list of all the trie's words, starting with the calling node.
+// collectAllWords returns a list of all the trie's words, starting with the calling node.
 func (t *trie) collectAllWords(node *trieNode) []string {
 	if node == nil {
 		node = t.root

@@ -1062,3 +1062,8 @@ Also **O(K)**. Technically O(K+1), for the added "*" at the end.
 
 ### Building Autocomplete
 This method will return an array of all the words in the trie, allowing us to start from any node in the trie.
+see [trie.go](trie.go)
+
+### Tries With Values: Improving Autocomplete
+To display words that are more popular than others, a 'popularity rating' can be stored in the trie as well. In this implementation,
+the `"*"` is perfect for this. Naturally, this would require refactoring of the acceptable value type in the underlying map.
