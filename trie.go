@@ -1,5 +1,7 @@
 package algo
 
+import "fmt"
+
 // trieNode represents a node in a trie tree. Uint8 is used instead of string for efficiency
 type trieNode struct {
 	children map[uint8]*trieNode
@@ -103,4 +105,54 @@ func (t *trie) AutoComplete(prefix string) []string {
 	}
 
 	return t.collectAllWords(currentNode)
+}
+
+// Traverse will iterate through and print all children keys.
+// Some additional formatting would be ideal.
+func (t *trie) Traverse(node *trieNode) {
+	if node == nil {
+		node = t.root
+	}
+
+	var recurse func(*trieNode)
+	recurse = func(n *trieNode) {
+		for key, childNode := range n.children {
+			fmt.Print(string(key))
+			if key != '*' {
+				recurse(childNode)
+			}
+		}
+	}
+
+	recurse(node)
+}
+
+// Autocorrect will check a given word against words in the trie and
+// return a spelling suggestion if it isn't found.
+func (t *trie) Autocorrect(word string) string {
+	currentNode := t.root
+
+	// Track how much of the given word is found in the trie
+	// so far to be concatenated with the best suffix found.
+	var wordMatch []uint8
+
+	for i := 0; i < len(word); i++ {
+		char := word[i]
+		// If the current node has a child key with the current char.
+		if n, found := currentNode.children[char]; found {
+			wordMatch = append(wordMatch, char)
+			// Follow the child node.
+			currentNode = n
+		} else {
+			// If char isn't found in current node's children, collect all
+			// suffixes that descend from the current node and get the first one.
+			// Concatenate it with the previously found prefix for suggestion.
+			wordMatch = append(wordMatch, t.collectAllWords(currentNode)[0][0])
+
+			return string(wordMatch)
+		}
+	}
+
+	// If complete word is found, return it.
+	return word
 }

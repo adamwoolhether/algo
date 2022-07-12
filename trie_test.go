@@ -1,6 +1,7 @@
 package algo
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -42,5 +43,37 @@ func TestTrie_AutoComplete(t *testing.T) {
 	res := newTrie.AutoComplete("c")
 	if diff := cmp.Diff(exp, res); diff != "" {
 		t.Errorf("exp %v, got %v; diff: %v", exp, res, diff)
+	}
+}
+
+func TestTrie_Autocorrect(t *testing.T) {
+	newTrie := NewTrie()
+
+	newTrie.Insert("ace")
+	newTrie.Insert("act")
+	newTrie.Insert("bad")
+	newTrie.Insert("bake")
+	newTrie.Insert("bat")
+	newTrie.Insert("batter")
+	newTrie.Insert("cat")
+	newTrie.Insert("catnip")
+	newTrie.Insert("catnap")
+
+	testCases := []struct {
+		input string
+		exp   string
+	}{
+		{"catnar", "catnap"},
+		{"catnip", "catnip"},
+		{"caxasfdij", "cat"},
+		{"bakp", "bake"},
+	}
+
+	for _, tc := range testCases {
+		t.Run(fmt.Sprintf("%s", tc.input), func(t *testing.T) {
+			if res := newTrie.Autocorrect(tc.input); res != tc.exp {
+				t.Errorf("exp %s, got %s", tc.exp, res)
+			}
+		})
 	}
 }
