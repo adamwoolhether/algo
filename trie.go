@@ -2,18 +2,18 @@ package algo
 
 // trieNode represents a node in a trie tree. Uint8 is used instead of string for efficiency
 type trieNode struct {
-	children map[rune]*trieNode
+	children map[uint8]*trieNode
+}
+
+func newTrieNode() *trieNode {
+	return &trieNode{
+		children: make(map[uint8]*trieNode),
+	}
 }
 
 // trie represents a trie data structure.
 type trie struct {
 	root *trieNode
-}
-
-func newTrieNode() *trieNode {
-	return &trieNode{
-		children: make(map[rune]*trieNode),
-	}
 }
 
 // NewTrie instantiates a new trie.
@@ -27,9 +27,10 @@ func NewTrie() *trie {
 func (t *trie) Search(word string) *trieNode {
 	currentNode := t.root
 
-	for _, r := range word {
+	for i := 0; i < len(word); i++ {
+		char := word[i]
 		// Current node has a child key with current char.
-		if n, ok := currentNode.children[r]; ok {
+		if n, ok := currentNode.children[char]; ok {
 			currentNode = n
 		} else {
 			// If current char isn't found amount the node's children.
@@ -44,15 +45,16 @@ func (t *trie) Search(word string) *trieNode {
 func (t *trie) Insert(word string) {
 	currentNode := t.root
 
-	for _, r := range word {
+	for i := 0; i < len(word); i++ {
+		char := word[i]
 		// Current node has a child key with current char.
-		if n, ok := currentNode.children[r]; ok {
+		if n, ok := currentNode.children[char]; ok {
 			currentNode = n
 		} else {
 			// If current char isn't found amount the node's children,
 			// add it as a new child node.
 			newNode := newTrieNode()
-			currentNode.children[r] = newNode
+			currentNode.children[char] = newNode
 
 			// Follow this node.
 			currentNode = newNode
@@ -69,19 +71,19 @@ func (t *trie) collectAllWords(node *trieNode) []string {
 		node = t.root
 	}
 	var words []string
-	var word string
+	var word []uint8
 
-	var recurse func(*trieNode, string) []string
-	recurse = func(currentNode *trieNode, w string) []string {
+	var recurse func(*trieNode, []uint8) []string
+	recurse = func(currentNode *trieNode, w []uint8) []string {
 		// Iterate through all the current node's children.
 		for key, childNode := range currentNode.children {
 			// A key of '*' means we've found a complete word,
 			// add it to the array.
 			if key == '*' {
-				words = append(words, w)
+				words = append(words, string(w))
 			} else {
 				// Still in the middle of a word, so recursively call this function on child node.
-				recurse(childNode, w+string(key))
+				recurse(childNode, append(w, key))
 			}
 		}
 
