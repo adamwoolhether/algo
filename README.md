@@ -993,3 +993,72 @@ Go ahead and try it out with the above example!
 Heapsort is a sorting algorithm in which all values are inserted into the heap, and then popped out. A max-heap would
 return values in _descending order_, and a min-heap would return values in _ascending order_.  
 This would give us a sort algorithm in O(N log N).
+
+## Tries
+Tries: A type of tree, great for applications that deal with text/numbers, enabling features like autocorrect and autocomplete.  
+Name comes from the word _retrieval_, but is pronounced as "try". Tries aren't as well documented and have many implementations.
+
+#### Trie Nodes
+Unlike binary trees, trie nodes can have _any_ amount of child nodes. We'll implement a trie nodes that contain a hash table, with 
+English letter keys, and values that point to other nodes.
+
+### Storing Words
+Ex: store three words: `"ace", "bad", "cat"` would create a node for each char in each word:
+```
+  {"a": ptr "b": ptr "c": ptr}
+        /         |        \
+ {"c": ptr}  {"a": ptr}  {"a": ptr}
+       |            |           |
+ {"e": ptr}  {"d": ptr}  {"t": ptr}
+       |            |           |
+ {"*": ptr}  {"*": ptr}  {"*": ptr}
+```
+The `"*"` indicates that there is a complete word that ends here. Adding the word "act" would look like:
+```
+  {"a": ptr "b": ptr "c": ptr}
+        /         |        \
+ {"c": ptr}  {"a": ptr}  {"a": ptr}
+       |            |_________  |_________
+       |                      |           |
+ {"e": ptr, "t": ptr}  {"d": ptr}  {"t": ptr}
+       |          |           |           |
+ {"*": ptr} {"*": ptr}  {"*": ptr}  {"*": ptr}
+```
+If a word like "batter" was added, the node being pointed by the 't' in 'b-a-t' would look like: `{"*": nil, "t": ptr}`.
+
+### Trie Search
+The classic trie operation. Two types:
+* Determine whether the string is a _complete_ word
+* Determine whether the string is at least a a word _prefix_.(We implement this here).
+
+The prefix-search algorithm uses the following algorithm:
+1. Declare a `currentNode` var, initally assigning the root node
+2. Iterate over each char of the string
+3. Check if `currentNode` has a child with the same key as the current char
+4. If not, return `nil`
+5. Otherwise, update the `currentNode` as that child. Repeat from step 2
+6. If the end of the string is reach, the search string has been found.
+
+#### Efficiency of Trie Search
+The algo takes _as many steps as there are characters in the search string._ However, it's not quite O(N), because N refers
+to the amount of data in the data structure (the number of nodes in the trie, which is usually much greater than the number of
+chars in the string.  
+#### O(K) 
+O(K) is usually used to describe the time complexity of Tries. O(K) isn't constant: the string size can vary.  
+But, it has one important similarity to constant time: the trie itself can grow tremendously, but it won't affect the search speed.
+In other words, a trie search on a string with 3 chars will always take three steps. Contrast this with non-constant algos, which are tied to the amount of data in the ds.  
+This means O(K) is extremely efficient.
+
+### Trie Insertion
+Algo is similar to search:
+1. Declare a `currentNode` var, initally assigning the root node
+2. Iterate over each char of the string
+3. Check if `currentNode` has a child with the same key as the current char
+4. If so, update `currentNode` to become that child node & go back to step 2, moving on the next char.
+5. Otherwise, create the child node with the char and update `currentNode` to point to this new node.
+6. After inserting the final char, add a `"*"` child to the last node.
+#### Speed
+Also **O(K)**. Technically O(K+1), for the added "*" at the end.
+
+### Building Autocomplete
+This method will return an array of all the words in the trie, allowing us to start from any node in the trie.
