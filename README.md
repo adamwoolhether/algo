@@ -1067,3 +1067,60 @@ see [trie.go](trie.go)
 ### Tries With Values: Improving Autocomplete
 To display words that are more popular than others, a 'popularity rating' can be stored in the trie as well. In this implementation,
 the `"*"` is perfect for this. Naturally, this would require refactoring of the acceptable value type in the underlying map.
+
+## Graphs
+Graphs are data structures that specialize in relationships, easily expressing how data is connected. Ex: In social networks, users are represented by _nodes_, with connecting lines representing a friendship.
+
+#### Graphs vs Trees
+Trees are a type of graph.  
+👉All trees are graphs, but not all graphs are trees.  
+A graph must not have _cycles_ to be considered a tree, and all nodes must be connected.  
+A _cycle_ is when nodes reference each other circularly.  
+Additionally, all nodes in a tree must be connected, but a graph allows nodes that may not be connected.
+
+#### Graph Jargon
+* _Vertex_: A node in a graph.
+* _Edges_, aka _vertices_: The lines between nodes.
+* _Adjacent_ describes nodes that are connected to each other. Tese are known as _neighbours_.
+
+#### Bare-Bones Graphs
+As a simple example, a hash map can be used to implement a simple graph. Here is one conveying a simpel social network:
+```go
+friends := map[string][]string{
+    "Alice": []string{"Bob", "Diana", "Fred"},
+    "Bob": []string{"Alice", "Cynthia", "Diana"},
+    "Cynthia": []string{"Bob"},
+    "Diana": []string{"Alice", "Bob", "Fred"},
+    "Elise": []string{"Fred"},
+    "Fred": []string{"Alice", "Diana", "Elise"},
+}
+```
+
+### Directed Graphs
+A social network may allow _non-mutual_ relationships: Alice can follow Bob, but Bob might not follow Alice.
+```
+   --------ALICE-------
+   |                  |
+   v                  v 
+CYNTHIA -----------> BOB
+    ^----------------|
+```
+Arrows indicate the _direction_ of the relationship. Above, Alice follows Bob and Cynthia and no one follows Alice. Bob and Cynthia follow each other.  
+Expressed as a hashmap:
+```go
+followees := make map[string][]string{
+        "Alice": []string{"Bob", "Cynthia"},
+		"Bob": []string{"Cynthia"},
+		"Cynthia": []string{"Bob"}
+    }
+}
+```
+
+### Object-Oriented Graph Implementation
+see [graph.go](graph.go)  
+An directed graph would add vertex to a vertex's list of neighbors as so:
+```go
+func (v *vertex) AddNeighbor(vertex vertex) {
+	v.neighbors = append(v.neighbors, vertex)
+}
+```
