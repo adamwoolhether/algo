@@ -1118,9 +1118,27 @@ followees := make map[string][]string{
 
 ### Object-Oriented Graph Implementation
 see [graph.go](graph.go)  
-An directed graph would add vertex to a vertex's list of neighbors as so:
+Our implementation uses a slice to store neighbors. This is known as the _adjacency list_ implementation.  
+Another implementation, known as _adjacency matrix_ uses two-dimenstional arrays instead of a list.
+
+We'll use a directed graph in our implementation. A directed graph would add vertex to a vertex's list of neighbors as so:
 ```go
 func (v *vertex) AddNeighbor(vertex vertex) {
 	v.neighbors = append(v.neighbors, vertex)
+}
+```
+Whereas an undirected implementation would mutually add node their their respective list of neighbors:
+```go
+// AddNeighborUndirected appends a given vertex to the calling vertex's list of neighbors.
+func (v *vertex[T]) AddNeighborUndirected(vertex *vertex[T]) {
+	// Prevent an infinite loop.
+	for _, n := range v.neighbors {
+		if n == vertex {
+			return
+		}
+	}
+
+	v.neighbors = append(v.neighbors, vertex)
+	v.AddNeighborUndirected(v)
 }
 ```
