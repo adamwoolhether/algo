@@ -61,7 +61,7 @@ type queue struct {
 	data *doublyLinkedList
 }
 
-func newQueue() queue {
+func NewLinkedListQueue() queue {
 	return queue{data: NewDoublyLinkedList()}
 }
 

@@ -59,7 +59,8 @@ func (v *vertex[T]) DepthFirstTraversal(writer io.Writer) {
 	recurse(v, visitedVertices)
 }
 
-// DepthFirstSearch searches
+// DepthFirstSearch uses the Depth First algorithm to search
+// far a node that contains the given value.
 func (v *vertex[T]) DepthFirstSearch(value T) *vertex[T] {
 	// Return if given search value is the caller's own.
 	if v.value == value {
@@ -99,4 +100,32 @@ func (v *vertex[T]) DepthFirstSearch(value T) *vertex[T] {
 	}
 
 	return recurse(v, value, visitedVertices)
+}
+
+func (v *vertex[T]) BreadthFirstSearch(writer io.Writer) {
+	graphQueue := NewLinkedListQueue()
+	visitedVertices := make(map[T]bool)
+
+	visitedVertices[v.value] = true
+	graphQueue.enqueue(v)
+
+	for graphQueue.read() != nil {
+		// Remove first vertex off queue and make it current vertex.
+		currentVertex := graphQueue.dequeue().(*vertex[T])
+
+		// Print the current vertex's value
+		fmt.Fprintf(writer, "%v\n", currentVertex.value)
+
+		// Iterate over the current vertex's neighbors.
+		for _, neighbor := range currentVertex.neighbors {
+			// If it hasn't been visited yet...
+			if !visitedVertices[neighbor.value] {
+				// Mark as visited.
+				visitedVertices[neighbor.value] = true
+
+				// Add neighbor to the queue.
+				graphQueue.enqueue(neighbor)
+			}
+		}
+	}
 }

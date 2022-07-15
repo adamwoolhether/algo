@@ -1164,3 +1164,16 @@ Algo:
 3. Iterate through the vertex's neighbors.
 4. Ignore neighbors that have been visited already.
 5. If the neighbor hasn't been visited, recursively perform a depth-first search on that vertex.
+
+### Breadth-First Search
+BFS doesn't use recursion, instead, it uses a queue.  
+Algo:
+1. Start from any vertex, the "starting vertex".
+2. Add it to the hash table, marked as visited.
+3. Add starting vertex to a queue.
+4. Start a loop that runs as long as the queue isn't empty.
+5. In the loop, remove the first vertex from the queue, the "current vertex".
+6. Iterate over all the neighbors of the current vertex.
+7. Ignore neighbors that have been visited already.
+8. If it hasn't been visited, mark it as visited and add it to the queue.
+9. Repeat loop (step 4) until queue is empty.
