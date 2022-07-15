@@ -1082,6 +1082,7 @@ Additionally, all nodes in a tree must be connected, but a graph allows nodes th
 * _Vertex_: A node in a graph.
 * _Edges_, aka _vertices_: The lines between nodes.
 * _Adjacent_ describes nodes that are connected to each other. Tese are known as _neighbours_.
+* _Path_ a specific sequence of edges from one vertex to another.
 
 #### Bare-Bones Graphs
 As a simple example, a hash map can be used to implement a simple graph. Here is one conveying a simpel social network:
@@ -1142,3 +1143,24 @@ func (v *vertex[T]) AddNeighborUndirected(vertex *vertex[T]) {
 	v.AddNeighborUndirected(v)
 }
 ```
+
+### Graph Search
+Searching for a vertex is a common graph operation, and has more specific meaning.  
+👉 _If we have access to one vertex in the graph, we must find another particular vertex that is somehow connected to this vertex._  
+This is so because there may be more than one path from one vertex to another.  
+Searching in graphs has many use-cases:
+1. Searching for a particular vertex within a connected graph. This can be done to find _any_ vertex in the graph if we have access to just one vertex.
+2. Discovering whether two vertices are connected.
+3. To merely traverse the graph, alllowing use to perform an operation on every vertex.  
+Two well known approaches go graph searches: _depth-first search_ & _breadth-first search_.
+
+### Depth-First Search
+aka DFS. Very similar to Binary Tree Traversal algo.  
+🔑 Key to graph search algos is keeping track of which vertices have been visited so far. This is how we prevent endless cycles.
+One way to do so is by using a hash table.  
+Algo:  
+1. Start at any random vertex within the graph.
+2. Add current vertex to hash table, marked as visited.
+3. Iterate through the vertex's neighbors.
+4. Ignore neighbors that have been visited already.
+5. If the neighbor hasn't been visited, recursively perform a depth-first search on that vertex.
