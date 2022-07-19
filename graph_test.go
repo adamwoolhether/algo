@@ -4,7 +4,8 @@ package algo
 func main() {
 	alice := NewVertex("alice")
 	bob := NewVertex("bob")
-	cynthia := NewVertex("cynthia")
+	candy := NewVertex("candy)
+
 
 	alice.AddNeighbor(bob)
 	alice.AddNeighbor(cynthia)

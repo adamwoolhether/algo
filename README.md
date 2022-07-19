@@ -1128,7 +1128,7 @@ func (v *vertex) AddNeighbor(vertex vertex) {
 	v.neighbors = append(v.neighbors, vertex)
 }
 ```
-Whereas an undirected implementation would mutually add node their their respective list of neighbors:
+Whereas an undirected implementation would mutually add a node to their respective list of neighbors:
 ```go
 // AddNeighborUndirected appends a given vertex to the calling vertex's list of neighbors.
 func (v *vertex[T]) AddNeighborUndirected(vertex *vertex[T]) {
@@ -1177,3 +1177,64 @@ Algo:
 7. Ignore neighbors that have been visited already.
 8. If it hasn't been visited, mark it as visited and add it to the queue.
 9. Repeat loop (step 4) until queue is empty.
+
+### DFS vs. BFS
+Breadth-first will go through all the calling vertex's immediate connections before spiralling out and moving
+further from the caller. In contrast, depth-first immediately moves as far away as possible from the calling vertex
+until being forced to return to it.  
+The correct choice depends on the usecase. Finding all _direct_ connections would be perfect for breadth-first. Finding a specific
+grandchild in a family tree would be served well with a depth-first search. Always ask:  
+⁉️ _Do we want to stay close to the starting vertex, or specifically move far away?_ Breadth-first is good for staying close, and depth first is good for moving away quickly.
+
+### Efficiency of Graph Search
+Because we touch all vertices in the graph, the speed seems to be O(N), where N is the number of vertices.  
+But, we have to also iterate over all neighbors for each vertex that is traversed.  
+As an example: A graph has the following 5 vertices:
+A, B, C, D, E. A has four neighbors, and the rest each have three. This would bring a total of 16 iterations + 5 visiting of each = 21 steps.  
+Another graph has 5 vertices:  V, W, X, Y, Z. V has four neighbors, the rest have only one. This brings a total of 8 iterations + 5 visiting of each = 13 steps.  
+👉Determining the Big O requires that we count how many vertices are in the graph AND how many neighbors each vertex has. We'd
+need _two_ variables to describe the time complexity. This is `O(V + E)`
+
+### O(V + E)
+_V_: _vertex_, representing the number of vertices in the graph.  
+_E_: _edge_, the number of edges in the graph.  
+The number of steps is the number of vertices plus the number of edges. Each edge is actually touched twice, but because constants are dropped in Big O, `V + 2E` is simplified to `O(V+E)`.  
+That said, the choice of BFS or DFS can help optimize searches in regard to the use case.
+
+### Weighted Graphs
+These add additional information to edges of the graph, a _weight_.  
+To use them in code, our `neighbors` array will be refactored to a hash table, with the key holding the vertex and the weight as the value.
+
+#### The Shortest Path Problem
+Weighted graphs help when modeling many types of dataset problems. One of these is known as the **Shorted Path Problem**.  
+If we have a graph of cities with airplane ticket prices, how to create an algorithm that finds the cheapest price to get from one city to the next?
+Here, the weight is a price, but it can also be a distance.
+
+## Dijkstra's Algorithm
+One of the most famous algos that can solve the shorted path problem, created by Edsger Dijjkstra in 1959.
+Using the airplane ticket price example below, we'll apply Dijkstra's algo to solve it. It has the added bonus of not only finding the cheapest price
+from our current city to destination city, but from our current city to _all_ known cities.
+#### Setup
+Create a way to store chepest known prices from starting city to all other known destinations.  
+`Cheapest Prices Table`
+| From ATL to: | City #1 | City #2 | City #3 | etc |
+|--------------|---------|---------|---------|-----|
+|              | $       | $       | $       | $   |
+We also need another table, the `Cheapest Previous Stopover City Table`
+
+| Cheapest Previous Sopover City from ATL | Boston | Chicago | Denver | El Paso |
+|-----------------------------------------|--------|---------|--------|---------|
+|                                         | city   | city    | city   | city    |
+
+#### Dijkstra's Algorithm Steps
+Here, "city" is synonymous with "vertex".
+1. Visit starting city, making it the "current city".
+2. Check prices from current city to its neighbors.
+3. If price to a neighbor from starting city is cheaper than price currently in `cheapest prices table`:
+   1. Update the `cheapest prices table` to reflect this cheaper price.
+   2. Update the `cheapest previous stopover city table`, making the neighbor city the key and the current city its value.
+4. Then visit the unvisited city that has the cheapest price from the starting city, making it the current city.
+5. Repeat steps 2 to 4 until every known city has been visited.
+
+See pages 369-377 for a more detailed walk through of the algorithm.
+

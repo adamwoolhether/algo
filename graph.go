@@ -8,6 +8,10 @@ import (
 	"golang.org/x/exp/constraints"
 )
 
+/*
+Implement a factory pattern to return optional directional/non-directional or weighted/non-weighted graph.
+*/
+
 // vertex represents a node in a graph.
 type vertex[T constraints.Ordered] struct {
 	mu        sync.RWMutex
@@ -29,6 +33,20 @@ func (v *vertex[T]) AddNeighbor(vertex *vertex[T]) {
 	defer v.mu.Unlock()
 
 	v.neighbors = append(v.neighbors, vertex)
+}
+
+// AddNeighborUndirected adds a given vertex to the calling vertex's
+// list of neighbors and vice-versa. For use in an undirected graph.
+func (v *vertex[T]) AddNeighborUndirected(vertex *vertex[T]) {
+	// Prevent an infinite loop.
+	for _, n := range v.neighbors {
+		if n == vertex {
+			return
+		}
+	}
+
+	v.neighbors = append(v.neighbors, vertex)
+	v.AddNeighborUndirected(v)
 }
 
 // DepthFirstTraversal Uses the Depth First Search algorith to traverse over all
