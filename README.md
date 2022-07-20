@@ -1217,6 +1217,7 @@ from our current city to destination city, but from our current city to _all_ kn
 #### Setup
 Create a way to store chepest known prices from starting city to all other known destinations.  
 `Cheapest Prices Table`
+
 | From ATL to: | City #1 | City #2 | City #3 | etc |
 |--------------|---------|---------|---------|-----|
 |              | $       | $       | $       | $   |
@@ -1234,7 +1235,11 @@ Here, "city" is synonymous with "vertex".
    1. Update the `cheapest prices table` to reflect this cheaper price.
    2. Update the `cheapest previous stopover city table`, making the neighbor city the key and the current city its value.
 4. Then visit the unvisited city that has the cheapest price from the starting city, making it the current city.
-5. Repeat steps 2 to 4 until every known city has been visited.
-
+5. Repeat steps 2 to 4 until every known city has been visited.  
 See pages 369-377 for a more detailed walk through of the algorithm.
+
+#### Efficiency of Dijkstra's Algorithm
+Dijsktra's algo has many variations, as it's a general description of the approach to find the shortest path within a weighted graph.  
+(NOTE: Remember to implement use of a priority queue instead of a slice).  
+The initial implementation, using a slice, has a speed of O(V<sup>2</sup>).
 
