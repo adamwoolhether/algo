@@ -120,7 +120,11 @@ func (v *vertex[T]) DepthFirstSearch(value T) *vertex[T] {
 	return recurse(v, value, visitedVertices)
 }
 
-func (v *vertex[T]) BreadthFirstSearch(writer io.Writer) {
+// BreadthFirstTraversal uses a Breadth First algorithm to traverse
+// over all neighbors of the calling vertex, printing out their
+// values to the given io.Writer. Neighbors to be visited are
+// stored in a queue.
+func (v *vertex[T]) BreadthFirstTraversal(writer io.Writer) {
 	graphQueue := NewLinkedListQueue()
 	visitedVertices := make(map[T]bool)
 
