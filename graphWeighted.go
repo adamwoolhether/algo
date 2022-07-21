@@ -133,7 +133,7 @@ func removeCurrentCity(unvisitedCities []*City, currentCityName string) []*City 
 	return unvisitedCities
 }
 
-// cheapestCityFromOrigin finds the city with the cheapest flight from the current origin.
+// cheapestCityFromOrigin finds the city with the cheapest flight from the origin.
 // This is needed because this implementation doesn't use a heap.
 func cheapestCityFromOrigin(unvisitedCities []*City, cheapestPrices map[string]int) *City {
 	if len(unvisitedCities) <= 0 {
@@ -146,6 +146,7 @@ func cheapestCityFromOrigin(unvisitedCities []*City, cheapestPrices map[string]i
 	for i := 1; i < len(unvisitedCities); i++ {
 		if cheapestPrices[unvisitedCities[i].name] < lowestPrice {
 			cheapestCity = unvisitedCities[i]
+			lowestPrice = cheapestPrices[unvisitedCities[i].name]
 		}
 	}
 

@@ -1,5 +1,23 @@
 package algo
 
+import "testing"
+
+func TestDepthFirstTraversal(t *testing.T) {
+
+}
+
+func TestDepthFirstSearch(t *testing.T) {
+
+}
+
+func TestBreadthFirstTraversal(t *testing.T) {
+
+}
+
+func TestBreadthFirstSearch(t *testing.T) {
+	
+}
+
 /*
 func main() {
 	alice := NewVertex("alice")

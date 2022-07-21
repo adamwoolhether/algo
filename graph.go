@@ -151,3 +151,28 @@ func (v *vertex[T]) BreadthFirstTraversal(writer io.Writer) {
 		}
 	}
 }
+
+func (v *vertex[T]) BreadthFirstSearch(value T) *vertex[T] {
+	graphQueue := NewLinkedListQueue()
+	visitedVertices := make(map[T]bool)
+
+	visitedVertices[v.value] = true
+	graphQueue.enqueue(v)
+
+	for graphQueue.read() != nil {
+		currentVertex := graphQueue.dequeue().(*vertex[T])
+
+		if currentVertex.value == value {
+			return currentVertex
+		}
+
+		for _, neighbor := range currentVertex.neighbors {
+			if !visitedVertices[neighbor.value] {
+				visitedVertices[neighbor.value] = true
+				graphQueue.enqueue(neighbor)
+			}
+		}
+	}
+
+	return nil
+}
