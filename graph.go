@@ -57,14 +57,14 @@ func (v *vertex[T]) DepthFirstTraversal(writer io.Writer) {
 	var recurse func(vert *vertex[T], m map[T]bool)
 	recurse = func(vert *vertex[T], m map[T]bool) {
 		// Mark the vertex as visited.
-		m[v.value] = true
+		m[vert.value] = true
 
 		// Print the vertex's value.
-		fmt.Fprintf(writer, "%v\n", vert.value)
+		fmt.Fprintf(writer, "%v", vert.value)
 
 		// Iterate through the current vertex's neighbors.
 		for _, neighbor := range vert.neighbors {
-			// Ignore the neighbor if it's been bisited already.
+			// Ignore the neighbor if it's been visited already.
 			if m[neighbor.value] {
 				continue
 			}
@@ -136,7 +136,7 @@ func (v *vertex[T]) BreadthFirstTraversal(writer io.Writer) {
 		currentVertex := graphQueue.dequeue().(*vertex[T])
 
 		// Print the current vertex's value
-		fmt.Fprintf(writer, "%v\n", currentVertex.value)
+		fmt.Fprintf(writer, "%v", currentVertex.value)
 
 		// Iterate over the current vertex's neighbors.
 		for _, neighbor := range currentVertex.neighbors {
