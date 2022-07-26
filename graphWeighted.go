@@ -48,6 +48,8 @@ func (c *City) AddRoute(city *City, price int) {
 	c.routes[city] = price
 }
 
+// DijkstraShortestPath will find the shortest/cheapest path
+// from an origin to destination vertex in  a weighted graph
 func DijkstraShortestPath(origin, destination *City) []string {
 	cheapestPrices := make(map[string]int)
 	cheapestPreviousStopover := make(map[string]string)
@@ -154,7 +156,7 @@ func cheapestCityFromOrigin(unvisitedCities []*City, cheapestPrices map[string]i
 }
 
 // reverseShortestPath flips shortestPath slice, so it is in the proper order.
-func reverseShortestPath(shortestPath []string) []string {
+func reverseShortestPath[T constraints.Ordered](shortestPath []T) []T {
 	for i, j := 0, len(shortestPath)-1; i < j; i, j = i+1, j-1 {
 		shortestPath[i], shortestPath[j] = shortestPath[j], shortestPath[i]
 	}

@@ -152,6 +152,8 @@ func (v *vertex[T]) BreadthFirstTraversal(writer io.Writer) {
 	}
 }
 
+// BreadthFirstSearch uses a Breadth First algorithm to search
+// for a node that contains the given value.
 func (v *vertex[T]) BreadthFirstSearch(value T) *vertex[T] {
 	graphQueue := NewLinkedListQueue()
 	visitedVertices := make(map[T]bool)
@@ -175,4 +177,53 @@ func (v *vertex[T]) BreadthFirstSearch(value T) *vertex[T] {
 	}
 
 	return nil
+}
+
+// /////////////////////////////////////////////////////////////////
+// Dijkstra's Algorithm Example
+
+// FindShortestPath finds the shortest path between two nodes in an unweighted graph.
+// Because the vertices aren't weighted, the path with the least amount of hops
+// is returns.
+func FindShortestPath[T constraints.Ordered](origin, destination *vertex[T]) []T {
+	visitedVertices := make(map[T]bool)
+	graphQueue := NewLinkedListQueue()
+
+	// Track each vertex's immediately preceding vertex.
+	previousVertex := make(map[T]T)
+
+	// Use breadth-first search.
+	visitedVertices[origin.value] = true
+	graphQueue.enqueue(origin)
+
+	for graphQueue.read() != nil {
+		currentVertex := graphQueue.dequeue().(*vertex[T])
+
+		for _, neighbor := range currentVertex.neighbors {
+			if !visitedVertices[neighbor.value] {
+				visitedVertices[neighbor.value] = true
+				graphQueue.enqueue(neighbor)
+
+				// Store in the previousVertex table the neighbor
+				// as the key and current vertex as value. This indicates
+				// that the current vertex is the immediately preceding
+				// vertex that leads to the neighbor.
+				previousVertex[neighbor.value] = currentVertex.value
+			}
+		}
+	}
+
+	// Same as in Dijkstra's algo, work backwards through the
+	// previousVertex table to build the shortest path.
+	shortestPath := []T{}
+	currentVertexValue := destination.value
+
+	for currentVertexValue != origin.value {
+		shortestPath = append(shortestPath, currentVertexValue)
+		currentVertexValue = previousVertex[currentVertexValue]
+	}
+
+	shortestPath = append(shortestPath, origin.value)
+
+	return reverseShortestPath(shortestPath)
 }

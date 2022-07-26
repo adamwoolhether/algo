@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestDepthFirstTraversal(t *testing.T) {
@@ -155,4 +157,34 @@ func TestBreadthFirstSearch(t *testing.T) {
 		t.Errorf("")
 	}
 	fmt.Println(found)
+}
+
+func TestFindShortestPath(t *testing.T) {
+	idris := NewVertex("Idris")
+
+	kamil := NewVertex("Kamil")
+	lina := NewVertex("Lina")
+	sasha := NewVertex("Sasha")
+
+	talia := NewVertex("Talia")
+	ken := NewVertex("Ken")
+	marco := NewVertex("Marco")
+
+	idris.AddNeighbor(kamil)
+	kamil.AddNeighbor(lina)
+	lina.AddNeighbor(sasha)
+	idris.AddNeighbor(talia)
+	talia.AddNeighbor(ken)
+	ken.AddNeighbor(marco)
+	marco.AddNeighbor(sasha)
+
+	exp := []string{"Idris", "Kamil", "Lina"}
+
+	result := FindShortestPath(idris, lina)
+
+	if diff := cmp.Diff(exp, result); diff != "" {
+		t.Errorf("Exp proper ordering, difference: %v", diff)
+	}
+
+	fmt.Println(result)
 }
