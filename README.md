@@ -1243,3 +1243,89 @@ Dijsktra's algo has many variations, as it's a general description of the approa
 (NOTE: Remember to implement use of a priority queue instead of a slice).  
 The initial implementation, using a slice, has a speed of O(V<sup>2</sup>).
 
+## Space Constraints
+Space constraints measure how much memory an algo consumes.
+
+### Big O of Space Complexity
+The key question in regards to space complexity:  
+🔑 _If there are N data elements, how many units of memory will the algorithm consume?_  
+Describing space complexity with Big O only counts _new_ data that is being generated, aka _auxiliary space_.  
+Some references will include the original space being used, be aware of this. Here, we do not.
+
+An example of an algo with space complexity O(N), because it generates an additional N data elements:
+```go
+func makeUppercaseInefficient(words []string) []string {
+	newSlice := make([]string, len(words))
+	for i, word := range words {
+		newSlice[i] = strings.ToUpper(word)
+	}
+
+	return newSlice
+}
+```
+Let's make it more efficient and not consume additional memory with O(1):
+```go
+func makeUppercase(words []string) []string {
+	for i, word := range words {
+		words[i] = strings.ToUpper(word)
+	}
+	
+	return words
+}
+```
+
+### Tradeoffs Between Time and Space
+Whether one of two algorithms is "more" efficient may depend on what matters to you most: time or space. Remember the func on line 49 that finds duplicate values:  
+Time Complexity: O(N<sup>2</sup>), Space Complexity: O(1)
+```go
+func hasDuplicateValue(arr []int) bool {
+    for i := 0; i < len(arr); i++ {
+        for j := 0; j < len(arr); j++ {
+            if i != j && arr[i] == arr[j] {
+                return true
+            }
+        }       
+    }
+}
+```
+and consider this version, which uses a hash map but is faster:  
+Time Complexity: O(N), Space Complexity: O(N)
+```go
+func hasDuplicateValueFaster(arr []int) bool {
+	existingVals := make(map[int]bool, len(arr))
+	for _, v := range arr {
+		if !existingVals[v] {
+			existingVals[v] = true
+		} else {
+			return true
+		}
+	}
+	
+	return false
+}
+```
+A third version, we've seen before, strikes a good balance between the two:
+Time Complexity: O(N log N), Space Complexity: O(log N)
+```go
+func hasDuplicateValue[T constraints.Ordered](input []T) bool {
+	sort.Slice(input, func(i, j int) bool { return input[i] < input[j] })
+
+	for i := 0; i < len(input)-1; i++ {
+		if input[i] == input[i+1] {
+			return true
+		}
+	}
+
+	return false
+}
+```
+
+### The Hidden Cost of Recursion
+Even if our algo doesn't make new arrays or hash maps, it's possible we might be consuming more space, as recursive functions 
+keep adding to the call stack.  
+If each function takes up O(N) space, than a func that makes 100 recusive calls will need enough memory to store 100 func calls in the call stack.  
+👉 _Recursive functions take up a unit of space for each recursive call it makes._  Properly calculating this requires determining how large the call stack
+would be at its peak.  
+As an example, quicksort make O(log N) recursive calls, so it has a call stack the size of log(N) at its peak.
+
+The `wordBuilder` algo on line 155 has a Space Complexity of O(N<sup>2</sup>)
