@@ -48,7 +48,7 @@ func TestTwoSum(t *testing.T) {
 	}
 }
 
-// gotest -bench Anagram -benchtime=100000x -run=^$
+// gotest -bench TwoSum -run=^$
 func BenchmarkTwoSumInefficient(b *testing.B) {
 	input := []int{2, 0, 4, 1, 7, 9}
 	b.ResetTimer()
@@ -57,7 +57,6 @@ func BenchmarkTwoSumInefficient(b *testing.B) {
 		_ = twoSumInefficient(input, 100)
 	}
 }
-
 func BenchmarkTwoSum(b *testing.B) {
 	input := []int{2, 0, 4, 1, 7, 9}
 	b.ResetTimer()
@@ -68,10 +67,73 @@ func BenchmarkTwoSum(b *testing.B) {
 }
 
 func TestGameWinnerInefficient(t *testing.T) {
-	size := 10
+	testCases := []struct {
+		size int
+		exp  string
+	}{
+		{1, "them"},
+		{2, "you"},
+		{3, "you"},
+		{4, "them"},
+		{5, "you"},
+		{6, "you"},
+		{7, "them"},
+		{8, "you"},
+		{9, "you"},
+		{10, "them"},
+	}
+
+	startingPlayer := "you"
+	for _, tc := range testCases {
+		t.Run(fmt.Sprintf("%d", tc.size), func(t *testing.T) {
+			if result := gameWinnerInefficient(tc.size, startingPlayer); result != tc.exp {
+				t.Errorf("exp %s, got %s", tc.exp, result)
+			}
+		})
+	}
+}
+
+func TestGameWinner(t *testing.T) {
+	testCases := []struct {
+		size int
+		exp  string
+	}{
+		{1, "them"},
+		{2, "you"},
+		{3, "you"},
+		{4, "them"},
+		{5, "you"},
+		{6, "you"},
+		{7, "them"},
+		{8, "you"},
+		{9, "you"},
+		{10, "them"},
+	}
+
+	for _, tc := range testCases {
+		t.Run(fmt.Sprintf("%d", tc.size), func(t *testing.T) {
+			if result := gameWinner(tc.size); result != tc.exp {
+				t.Errorf("exp %s, got %s", tc.exp, result)
+			}
+		})
+	}
+}
+
+// gotest -bench GameWinner -run=^$
+func BenchmarkGameWinnerInefficient(b *testing.B) {
+	size := 20
 	startingPlayer := "you"
 
-	result := gameWinnerInefficient(size, startingPlayer)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		gameWinnerInefficient(size, startingPlayer)
+	}
+}
+func BenchmarkGameWinner(b *testing.B) {
+	size := 20
 
-	fmt.Println(result)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		gameWinner(size)
+	}
 }

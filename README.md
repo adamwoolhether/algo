@@ -1413,4 +1413,6 @@ So, we can take the number of coins, subtract 1, and each "them" will end up on 
 [gameWinner](xtraOptimizationTechniques.go)
 
 #### The Sum Swap Problem
-This example combines pattern recognition and magical lookups.
+This example combines pattern recognition and magical lookups.  
+Write a function that accepts two int arrays. It should find one number from each array that can be swapped, allowing the 
+two array sums to be equal.
