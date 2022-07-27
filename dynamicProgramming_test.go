@@ -110,13 +110,13 @@ func TestGolomb(t *testing.T) {
 
 func BenchmarkMax(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		max([]int{1, 2, 3, 4, 5, 6, 7})
+		max(ints)
 	}
 }
 
 func BenchmarkMaxInefficient(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		maxInefficient([]int{1, 2, 3, 4, 5, 6, 7})
+		maxInefficient(ints)
 	}
 }
 

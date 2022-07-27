@@ -218,3 +218,29 @@ func BenchmarkSumSwapLongArray(b *testing.B) {
 		sumSwap(input1, input2)
 	}
 }
+
+func TestMaxGreedy(t *testing.T) {
+	testCases := []struct {
+		input []int
+		exp   int
+	}{
+		{[]int{3, 7, 99, 2, 88, 2, 4}, 99},
+		{[]int{-9, 5, 2, 9, -88, 0}, 9},
+		{[]int{-99, -44, -29, -3}, -3},
+	}
+
+	for _, tc := range testCases {
+		t.Run(fmt.Sprintf("input: %v", tc.input), func(t *testing.T) {
+			if result := maxGreedy(tc.input); result != tc.exp {
+				t.Errorf("max() exp %d, got %d", tc.exp, result)
+			}
+		})
+	}
+}
+
+func BenchmarkMaxGreedy(b *testing.B) {
+	// input := []int{3, 7, 99, 2, 88, 2, 4}
+	for i := 0; i < b.N; i++ {
+		maxGreedy(ints)
+	}
+}

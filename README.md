@@ -1433,3 +1433,22 @@ Let's find some patterns with examples:
 1. Determine how much an array sum needs to shift with this calculation: `shifteAmt := (sum1 - sum2) / 2`
 2. Store numbers from one array in a hash table, and look it up as we iterate through the second.    
 see [sumSwap](xtraOptimizationTechniques.go)
+
+### Greedy Algorithms
+_Greedy algorithms_ in each step, choose what appears to be the best option _at that moment in time._ Example:  
+#### Array Max
+```go
+func maxGreedy[T numbers](nums []T) T {
+	greatest := nums[0]
+
+	for _, num := range nums {
+		if num > greatest {
+			greatest = num
+		}
+	}
+
+	return greatest
+}
+```
+This is 'greedy' because it assumes the first number encountered so far is the greatest.
+#### Largest Subsection Sum

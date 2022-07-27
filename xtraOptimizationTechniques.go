@@ -131,3 +131,17 @@ func sumSwap[T numbers](slice1 []T, slice2 []T) [2]int {
 
 	return [2]int{}
 }
+
+// maxGreedy finds the greatest number in a slice.
+// It represents a greedy version of the max algorithm
+func maxGreedy[T numbers](nums []T) T {
+	greatest := nums[0]
+
+	for _, num := range nums {
+		if num > greatest {
+			greatest = num
+		}
+	}
+
+	return greatest
+}
