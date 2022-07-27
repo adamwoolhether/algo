@@ -13,11 +13,11 @@ Why is this important?
 Suppose we have two algorithms. One O(1) algo takes 100 steps, regardless of input size. The other, a linear O(N). Which is faster?  
 _For all arrays greater than 100, the O(N) algo takes longer._
 
-* Big O notation generally refers the the worst-case scenario, unless noted otherwise.
+* Big O notation generally refers the worst-case scenario, unless noted otherwise.
 
 
 ### Speeds
-| Big O            |   Pronounciation   | Time Complexity | Notes                   |
+| Big O            |   Pronunciation    | Time Complexity | Notes                   |
 |:-----------------|:------------------:|:----------------|:------------------------|
 | O(1)             |     "O of one"     | Constant time   |                         |
 | O(log N)         |    "O of log N"    | Log time        |                         |
@@ -126,7 +126,7 @@ _If you don't know_, the average case applied, and both are equal.
 ## Determining Efficiency - Examples
 
 To answer the question of "if there are N data elements, how many steps will the algorithm take?":
-1. Determing what the "N" data elements are.
+1. Determining what the "N" data elements are.
 2. Determine how many steps the algorithm takes to process these N values.
 
 ### Mean Average of Even Numbers
@@ -150,7 +150,7 @@ func averageOfEvenNumbers(arr []int) int {
 In this example, the loop loops over each of the N elements, so it takes at least N steps.
 Inside the loop, it checks if the number is even, and if so, performs two more steps (add to sum, and increment count).  
 Big O assumes the worst case, so we say it takes 3N steps, 3 steps for each of the N numbers. Outside the loop, there are
-another 3 steps performed. Overall, it the algorithm takes a total of **3N + 3**. After ignoring constants, this is **O(N)**.
+another 3 steps performed. Overall, the algorithm takes a total of **3N + 3**. After ignoring constants, this is **O(N)**.
 
 ### Word Builder
 3N<sup>2</sup> + 1   
@@ -184,7 +184,7 @@ func sample(arr []int) (int, int, int) {
 }
 ```
 
-### Average Celcius Reading
+### Average Celsius Reading
 2N  
 O(N)
 ```go
@@ -227,7 +227,7 @@ func markInventory(clothingItems []string) []string {
 ```
 ### Count the Ones
 O(N)  
-Inner loop only runs for as many numbers as ther are _in total_.
+Inner loop only runs for as many numbers as there are _in total_.
 ```go
 func countOnes(outerArr [][]int) int {
 	count := 0
@@ -252,7 +252,7 @@ func isPalindrome(str string) bool {
 	leftIndex := 0
 	rightIndex := len(str) - 1
 
-	// Interate until left index reaches middle of the array.
+	// Iterate until left index reaches middle of the array.
 	for leftIndex < len(str)/2 {
 		if str[leftIndex] != str[rightIndex] {
 			return false
@@ -327,7 +327,7 @@ Hash table efficiency depends on:
 * How many cells are available in the hash table
 * The hash function being used.    
 
-A good hash table _strikes a good balance between avoiding collisions and not consuming large amounts of memeory_  
+A good hash table _strikes a good balance between avoiding collisions and not consuming large amounts of memory_  
 #️⃣ **For every 7 data elements stored in the hash table, it should have 10 cells**   
 **Load Factor:** the ratio of data to cells.  
 #️⃣ _Ideal load factor:_`0.7` = `7 elements / 10 cells`
@@ -346,7 +346,7 @@ _Pushing onto the stack_: inserting data.
 _Popping from the stack_: removing data.  
 _Peaking_: reading the last element without removal.
 
-Stacks are _abstract data types_: a data structure with a theoretical set of rules revlolving around some other concrete 
+Stacks are _abstract data types_: a data structure with a theoretical set of rules revolving around some other concrete 
 data structure.  
 Abstract data structures help prevent bugs and give us mental models to work with for a problem.
 
@@ -354,8 +354,8 @@ Abstract data structures help prevent bugs and give us mental models to work wit
 A FIFO data structure.  
 Three constraints:
 * Data is inserted at the end of the queue.
-* Data is delete from the fron of the queue.
-* Only the first elemen can be read.
+* Data is deleted from the front of the queue.
+* Only the first element can be read.
 
 _Enqueue_: inserting data.  
 _Dequeue_: removing data.  
@@ -441,7 +441,7 @@ func doubleArray(arr []int) {
 ```
 
 ### Calculations
-When the goal is to make a calculatoin based on a sub-problem of the problem at hand.  
+When the goal is to make a calculation based on a sub-problem of the problem at hand.  
 _Subproblem_: the very same problem applied to a smaller input.
 ex: factorials. `6! = 6 * 5 * 4 * 3 * 2 * 1`. Here, we know that factorial(6) will be multiplied by whatever factorial(5) is.
 So `factorial(6)` is the same as `6 * factorial(5)`.
@@ -455,19 +455,19 @@ Requires passing extra params. Bottom up is the same strategy used for making lo
 Making calculations based on the problem's subproblems. _Needs_ recursion.
 
 ### Top-Down Recursion
-Allows us to mentally "kick the problem down the road.   
+Allows us to mentally "kick the problem down the road".   
 We don't have to understand how the function calling works so solve the problem, as in the `return n * factorial(n - 1` statement. 
 #### Top-Down Thought Process
 1. Imagine the function you're writing has already been implemented before.
 2. Identify the subproblem of the problem.
-3. See what happens when you call the funciton on the subpoblem and go from there.
+3. See what happens when you call the function on the subpoblem and go from there.
 
 #### Examples
 _Array Sum_  
 A func that sums all nums in an array. Given an array `[1, 2, 3, 4, 5]`  
-- Assume it has alraedy been implemented. 
+- Assume it has already been implemented. 
 - Identify the subproblem: We can say the _subproblem_ is `[2, 3, 4, 5]`, all numbers except for the first. 
-- Try apply the sum func to our sub problem: `sum([2, 3, 4, 5] = 14`. Adding the first number, `1`, to the result.
+- Try to apply the sum func to our sub problem: `sum([2, 3, 4, 5] = 14`. Adding the first number, `1`, to the result.
   - i.e. `return array[0] + sum(array[1:len(array)-1])`, 
 - Lastly, be sure to handle the base case! `if len(array) == 1; { return array[0] }`
 
@@ -487,7 +487,7 @@ func reverse(s string) string {
 
 _Counting X_  
 Return the number of "x's" in a given string.  
-Given string `"axbxcxd"` it should reutnr 3. Subproblem is `"xbxcxd"`  
+Given string `"axbxcxd"` it should return 3. Subproblem is `"xbxcxd"`  
 We call `countX("xbxcxd")` and get 3. We would need to add 1 if the first char was "x", or just return that if not.
 ```go
 func countX(str string) int {
@@ -505,7 +505,7 @@ func countX(str string) int {
 
 ### The Staircase Problem
 Given a staircase of N steps, you have the ability to climb 1, 2, or 3 steps at a time. 
-How many different possible paths can someone take to reach the top?
+How many possible paths can someone take to reach the top?
 
 Ex:  
 Two steps - Two possible paths: `1, 1`, `2`  
@@ -594,11 +594,11 @@ For other string lengths:
 6 Chars: 6 * 5 * 4 * 3 * 2 * 1  anagrams
 ```
 This is a **factorial** pattern.
-Given N data elements, how many steps does the algo taks? For length of N, we create `N!` anagrams.  
+Given N data elements, how many steps does the algo take? For length of N, we create `N!` anagrams.  
 This is **O(N!)**, aka _factorial time._ Very slow!
 
 ## Dynamic Programming
-Dynamic programming is the process of optimizing recursve problems that have overlapping subproblems. There are two ways to do this:
+Dynamic programming is the process of optimizing recursive problems that have overlapping subproblems. There are two ways to do this:
 _Memoization_ and "going bottom up". First, we'll look at some inefficient recursive funcs.
 Recursion can sometimes cause excess time complexity. Example of a poorly constructed recursive func:  
 **O(2<sup>N</sup>)**
@@ -1329,3 +1329,88 @@ would be at its peak.
 As an example, quicksort make O(log N) recursive calls, so it has a call stack the size of log(N) at its peak.
 
 The `wordBuilder` algo on line 155 has a Space Complexity of O(N<sup>2</sup>)
+
+## Additional Code Optimization Techniques
+1️⃣ Before optimization begins: Determine the current efficiency of the code in question.  
+2️⃣ Come up with what you believe is the "best-imaginable" Big O, aka "best-conceivable runtime". This is the Big O you
+know is absolutely impossible to beat.  
+3️⃣ If the best-imaginable is better than the current Big O, attempt optimization.  
+
+Remember: achieving the best imaginable Big O is not always possible.  
+Mental trick to think of best-imaginable Big O: "If someone said they know how to implement this amazing Big O for the problem, would I believe them?"
+
+### Magical Lookups
+Ask: "If i could magically find the desired piece of data with O(1) time, would it make the algo faster?" If yes, then use
+a data-structure(ie hashmap) to make it happen.
+
+### Two-Sum Problem
+Exercise: Write a func that accepts an array, returning true if any two numbers in th array add up to a given number.  
+**O(N<sup>2</sup>**
+```go
+func twoSumInefficient(nums []int, target int) bool {
+	for i := 0; i < len(nums); i++ {
+		for j := 0; j < len(nums); j++ {
+			if i != j && nums[i]+nums[j] == target {
+				return true
+			}
+		}
+	}
+
+	return false
+}
+```
+Assume we give this func the input `[2, 0, 4, 1, 7, 9]` with a target `10`. For the element at index 0, `2`, the _counterpart_, 
+or the number that if added to `2` would equal the target is `8`. Similarly, the counterpart to the second index,`0` would be `10`.  
+Therefore, we can calculate any number's counterpart by subtracting it from the target.  
+Now, we can implement an algo with better time complexity:
+```go
+func twoSum[T numbers](nums []T, target T) bool {
+	numMap := make(map[T]struct{}, len(nums))
+
+	for _, num := range nums {
+		if _, ok := numMap[target-num]; ok {
+			return true
+		}
+		numMap[num] = struct{}{}
+	}
+
+	return false
+}
+```
+NOTE: Interesting, even though this has better Big O, benchmarks indicate that `twoSumInefficient` is actually faster.
+
+### Recognizing Patters
+Finding patterns within the problem at hand is a great strategy for code optimization/algorithm development.
+#### The Coin Game
+Two players start with a pile of coins, each has the choice of removing one or two coins each turn. They play who removes the last coin loses.
+Patterns:  
+If there's only one coin, the player whose turn it is loses.  
+If there are two coins left, the player whose turn it is can force a win.  
+If there are three coins remaining, the player whose turn it is can also force a win.  
+If there are four, the current player has a dilemma. 
+
+To write a function calculating whether we can win when presented with a coin pile of a certain size, we can use a top-down recursion approach.  
+see [gameWinnerInefficient](xtraOptimizationTechniques.go)
+
+**Examples**
+Examples help us detect a pattern:
+
+| # of Coins | Winner |
+|------------|--------|
+| 1          | Them   |
+| 2          | You    |
+| 3          | You    |
+| 4          | Them   |
+| 5          | You    |
+| 6          | You    |
+| 7          | Them   |
+| 8          | You    |
+| 9          | You    |
+| 10         | Them   |
+
+Here, we see that starting with 1 coind, every third number gives victory to the opponent (assuming first play is you).  
+So, we can take the number of coins, subtract 1, and each "them" will end up on a number divisible by three, allowing us to simplify the algo to:
+[gameWinner](xtraOptimizationTechniques.go)
+
+#### The Sum Swap Problem
+This example combines pattern recognition and magical lookups.
