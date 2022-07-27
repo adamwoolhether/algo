@@ -244,3 +244,12 @@ func BenchmarkMaxGreedy(b *testing.B) {
 		maxGreedy(ints)
 	}
 }
+
+func TestMaxSum(t *testing.T) {
+	input := []int{3, -4, 4, -3, 5, -9}
+	exp := 6
+
+	if result := maxSum(input); result != exp {
+		t.Errorf("exp %d, got %d", exp, result)
+	}
+}

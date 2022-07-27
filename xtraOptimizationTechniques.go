@@ -1,5 +1,7 @@
 package algo
 
+import "fmt"
+
 // twoSum1 determines if the sum of any two numbers in a given list
 // will add up to the target number.
 // It demonstrates an inefficient solution with an O(N^2) runtime.
@@ -144,4 +146,30 @@ func maxGreedy[T numbers](nums []T) T {
 	}
 
 	return greatest
+}
+
+// maxSum returns the greatest sum of any contiguous subsection
+// in a given slice of numbers.
+// Time Complexity: O(1)
+func maxSum[T numbers](nums []T) T {
+	var currentSum T
+	var greatestSum T
+
+	for i, number := range nums {
+		fmt.Println(i, number, currentSum, greatestSum)
+		// If current number is < 0, reset the current sum to zero.
+		if currentSum+number < 0 {
+			currentSum = 0
+			continue
+		}
+		currentSum += number
+
+		// Greedily assume current sum is the greatest sum
+		// if it's the greatest sum we've encountered so far.
+		if currentSum > greatestSum {
+			greatestSum = currentSum
+		}
+	}
+
+	return greatestSum
 }

@@ -1452,3 +1452,6 @@ func maxGreedy[T numbers](nums []T) T {
 ```
 This is 'greedy' because it assumes the first number encountered so far is the greatest.
 #### Largest Subsection Sum
+Write a function that takes an array of numbers, returning the largest sum that can be computed from any "subsection". 
+Here, a "subsection" represents a _contiguous subsection_, the numbers are in a row.  
+An inefficient approach, calculating every subsection, would take **O(N<sup>2</sup>)**. We'll imagine O(N) and the best-imaginable speed.
