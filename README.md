@@ -1415,4 +1415,21 @@ So, we can take the number of coins, subtract 1, and each "them" will end up on 
 #### The Sum Swap Problem
 This example combines pattern recognition and magical lookups.  
 Write a function that accepts two int arrays. It should find one number from each array that can be swapped, allowing the 
-two array sums to be equal.
+two array sums to be equal, returning the indices of the numbers or `nil` if it's not possible..  
+If we input `[5, 3, 2, 9, 1]` (sum of 20) and `[1, 12, 5]` (sum of 18), we'd need to switch `2` from the first and `1` from the second to get a sum of `19` from both.  
+A double-nested solution would give us speed of **O(N * M)**.  
+We know we'll have to visit each number from the two arrays at least once. This would be **O(N + M)**.  
+Let's find some patterns with examples:
+
+| Before Swap                                                 | After Swap                                                           |
+|-------------------------------------------------------------|----------------------------------------------------------------------|
+| arr1 = [5, 3, 3, 7] sum: 18<br/>arr2 = [4, 1, 1, 6] sum: 12 | arr1 = [5, 3, 3, **4**], sum: 15<br/>arr2 = [**7**, 1, 1, 6] sum: 15 |
+| arr1 = [1, 2, 3, 4, 5] sum: 15<br/>arr2 = [6, 7, 8] sum: 12 | arr1 = [1, 2, **6**, 4, 5], sum: 18<br/>arr2 = [**3**, 7, 8] sum: 18 |
+| arr1 = [10, 15, 20] sum: 45<br/>arr2 = [5, 30] sum: 35      | arr1 = [**5**, 5, 20], sum: 40<br/>arr2 = [**10**, 30] sum: 40       |  
+* To achieve equal sums: the larger array needs to trade a larger number with a smaller number from the smaller array
+* With a single swap, each array's sum changes by the same amount. (one array decreases by n, and the other increases by n)
+* Swaps always cause the two array sums to fall _exactly in the middle_ of where the two array sums begin.  
+**Implementation:**  
+1. Determine how much an array sum needs to shift with this calculation: `shifteAmt := (sum1 - sum2) / 2`
+2. Store numbers from one array in a hash table, and look it up as we iterate through the second.    
+see [sumSwap](xtraOptimizationTechniques.go)

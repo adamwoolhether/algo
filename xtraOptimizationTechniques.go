@@ -65,3 +65,69 @@ func gameWinner(numberOfCoins int) string {
 
 	return "you"
 }
+
+// determines the indices of two slices that, if switched
+// would give the two arrays the same sum. An empty array is
+// returned if non are found.
+// It's an inefficient algorithm, using nested loops.
+func sumSwapInefficient[T numbers](slice1 []T, slice2 []T) [2]int {
+	sum := func(nums []T) T {
+		var sum T
+		for _, v := range nums {
+			sum += v
+		}
+
+		return sum
+	}
+
+	sum1 := sum(slice1)
+	sum2 := sum(slice2)
+
+	var newSum1 T
+	var newSum2 T
+	for i := 0; i < len(slice1); i++ {
+		for j := 0; j < len(slice2); j++ {
+			newSum1 = sum1 - slice1[i] + slice2[j]
+			newSum2 = sum2 - slice2[j] + slice1[i]
+			if newSum1 == newSum2 {
+				return [2]int{i, j}
+			}
+		}
+	}
+
+	return [2]int{}
+}
+
+// sumSwap determines the indices of two slices that, if switched
+// would give the two arrays the same sum. An empty array is
+// returned if non are found.
+// Time Complexity: O(N + M)
+func sumSwap[T numbers](slice1 []T, slice2 []T) [2]int {
+	hashMap := make(map[T]int)
+	var sum1 T
+	var sum2 T
+
+	// Get sum of first array, storing its values in a hash table with its index.
+	for i, v := range slice1 {
+		sum1 += v
+		hashMap[v] = i
+	}
+
+	// Get sum of second array
+	for _, v := range slice2 {
+		sum2 += v
+	}
+
+	// Calculate how much the array sums must shift to be equal.
+	shiftAmount := (sum1 - sum2) / 2
+
+	// Iterate over each number in the second array
+	for index2, v := range slice2 {
+		// Check hashmap for the number's counterpart.
+		if index1, ok := hashMap[v+shiftAmount]; ok {
+			return [2]int{index1, index2}
+		}
+	}
+
+	return [2]int{}
+}
