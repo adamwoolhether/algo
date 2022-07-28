@@ -1,6 +1,9 @@
 package algo
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 // twoSum1 determines if the sum of any two numbers in a given list
 // will add up to the target number.
@@ -172,4 +175,23 @@ func maxSum[T numbers](nums []T) T {
 	}
 
 	return greatestSum
+}
+
+// increasingTriplets will determin if there is an upward trend in a given slice of
+// prices. An 'uptrend' is defined as three increasing prices.
+func increasingTriplets(stockPrices []float64) bool {
+	lowestPrice := stockPrices[0]
+	middlePrice := math.Inf(1)
+
+	for _, price := range stockPrices {
+		if price <= lowestPrice {
+			lowestPrice = price
+		} else if price <= middlePrice { // If current price > lowest, but lower than middle.
+			middlePrice = price
+		} else { // Current price is higher than middle price.
+			return true
+		}
+	}
+
+	return false
 }

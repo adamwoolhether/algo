@@ -1455,3 +1455,17 @@ This is 'greedy' because it assumes the first number encountered so far is the g
 Write a function that takes an array of numbers, returning the largest sum that can be computed from any "subsection". 
 Here, a "subsection" represents a _contiguous subsection_, the numbers are in a row.  
 An inefficient approach, calculating every subsection, would take **O(N<sup>2</sup>)**. We'll imagine O(N) and the best-imaginable speed.
+#### Greedy Stock Predictions
+We'll look for a positive trend in a given stock. Function takes an array of stock prices, and determines if there are 
+any three prices that create an upward trend.  
+Example: Given an array of stock prices: `[22, 25, 21, 18, 19.6, 17, 16, 20.5]`, we can see that `18`, `19.6`, and `20.5` indicate an upward trend.  
+This _could_ be done with three nested loops, but that doesn't scale well, and would be O(N<sup>3</sup>), very slow.  
+To apply a greedy mentality, we'll "grab" what is likely the lower point in a potential three-price upward trend:
+1. Assume the first price is the lowest point.
+2. For the middle price, initialize it to a number that is guaranteed to be greater than the highest stock price in the array, initially setting it to infinity.
+3. Run the algorithm:
+   1. If current price is lower than lowest encountered price, this becomes the second-lowest price.
+   2. If current price is higher than the lowest price, but lowers than the middle price, this becomes the new middle price.
+   3. If current price is higher than the lowest and middle price, this becomes the new highest price.
+
+See [increasingTriplets](xtraOptimizationTechniques.go) for implementation.

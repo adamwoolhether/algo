@@ -253,3 +253,23 @@ func TestMaxSum(t *testing.T) {
 		t.Errorf("exp %d, got %d", exp, result)
 	}
 }
+
+func TestIncreasingTriplets(t *testing.T) {
+	testCases := []struct {
+		input []float64
+		exp   bool
+	}{
+		{[]float64{5, 2, 8, 4, 3, 7}, true},
+		{[]float64{8, 9, 7, 10}, true},
+		{[]float64{8, 9, 4, 5}, false},
+		{[]float64{22, 25, 21, 18, 19.6, 17, 16, 20.5}, true},
+	}
+
+	for _, tc := range testCases {
+		t.Run(fmt.Sprintf("%v", tc.input), func(t *testing.T) {
+			if result := increasingTriplets(tc.input); result != tc.exp {
+				t.Errorf("exp %t, got %t", tc.exp, result)
+			}
+		})
+	}
+}
