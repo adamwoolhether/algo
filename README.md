@@ -1469,3 +1469,10 @@ To apply a greedy mentality, we'll "grab" what is likely the lower point in a po
    3. If current price is higher than the lowest and middle price, this becomes the new highest price.
 
 See [increasingTriplets](xtraOptimizationTechniques.go) for implementation.
+
+### Changing the Data Structure
+Another optimization technique is to use a different data structure.
+#### Anagram Checker
+Write a func that compares two strings side by side, determining if they're an anagram of one another or not. If we used the 
+[anagramsOf](recursion.go) function, but this would bring a O(N!) time. See [xtraOptimizationTechniques.go](xtraOptimizationTechniques.go) for optimizations.
+#### Group Sorting

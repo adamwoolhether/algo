@@ -3,6 +3,10 @@ package algo
 import (
 	"fmt"
 	"math"
+	"sort"
+	"strings"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 // twoSum1 determines if the sum of any two numbers in a given list
@@ -194,4 +198,88 @@ func increasingTriplets(stockPrices []float64) bool {
 	}
 
 	return false
+}
+
+// areAnagramsNested is a slightly better approach than the anagramsOf implementation.
+// It runs at O(N*M). ***Will need to analyze Time Complexity of ReplaceAll to be more accurate.
+func areAnagramsNested(firstString, secondString string) bool {
+	firstString = strings.ReplaceAll(firstString, " ", "")
+	secondString = strings.ReplaceAll(secondString, " ", "")
+
+	// Convert second string into an array, allowing us to delete chars from it.
+	for i := 0; i < len(firstString); i++ {
+		// If we're iterating through the first string but the second string is empty.
+		if len(secondString) == 0 {
+			return false
+		}
+
+		for j := 0; j < len(secondString); j++ {
+			// If the same char found in both strings.
+			if firstString[i] == secondString[j] {
+				// Delete the char from the second array and return to outer loop.
+				secondString = fmt.Sprintf("%s%s", secondString[:j], secondString[j+1:])
+				break
+			}
+
+			if j == len(secondString)-1 { // Indicates that secondString lacks a char that firstString has.
+				return false
+
+			}
+		}
+	}
+
+	// If there are no chars remaining in the secondString
+	// after iterating over the first, then the two strings are an anagram.
+	return len(secondString) == 0
+}
+
+// areAnagramsSorted first sorts the two strings, comparing them
+// side-by-side to determine if they're an anagram of each other.
+// Theoretical time: O(N log N + M log M)
+func areAnagramsSorted(firstString, secondString string) bool {
+	firstRunes := []rune(strings.ReplaceAll(firstString, " ", ""))
+	secondRunes := []rune(strings.ReplaceAll(secondString, " ", ""))
+	sort.Slice(firstRunes, func(i int, j int) bool {
+		return firstRunes[i] < firstRunes[j]
+	})
+	sort.Slice(secondRunes, func(i int, j int) bool {
+		return secondRunes[i] < secondRunes[j]
+	})
+
+	if len(firstRunes) != len(secondRunes) {
+		return false
+	}
+
+	for i := 0; i < len(firstRunes); i++ {
+		if firstRunes[i] != secondRunes[i] {
+			return false
+		}
+	}
+
+	return true
+}
+
+// areAnagrams determines if two strings are anagrams by places each
+// char in a hash map and comparing the resulting hash maps' number of each char.
+// It takes N+M steps.
+func areAnagrams(firstString, secondString string) bool {
+	firstStringMap := make(map[uint8]int)
+	secondStringMap := make(map[uint8]int)
+
+	// Create a hashmap out of the first string.
+	for i := 0; i < len(firstString); i++ {
+		if firstString[i] == 32 {
+			continue
+		}
+		firstStringMap[firstString[i]]++
+	}
+	// Create a hashmap out of the second string.
+	for i := 0; i < len(secondString); i++ {
+		if secondString[i] == 32 {
+			continue
+		}
+		secondStringMap[secondString[i]]++
+	}
+
+	return cmp.Equal(firstStringMap, secondStringMap)
 }
