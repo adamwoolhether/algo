@@ -203,8 +203,8 @@ func increasingTriplets(stockPrices []float64) bool {
 // areAnagramsNested is a slightly better approach than the anagramsOf implementation.
 // It runs at O(N*M). ***Will need to analyze Time Complexity of ReplaceAll to be more accurate.
 func areAnagramsNested(firstString, secondString string) bool {
-	firstString = strings.ReplaceAll(firstString, " ", "")
-	secondString = strings.ReplaceAll(secondString, " ", "")
+	firstString = strings.ToLower(strings.ReplaceAll(firstString, " ", ""))
+	secondString = strings.ToLower(strings.ReplaceAll(secondString, " ", ""))
 
 	// Convert second string into an array, allowing us to delete chars from it.
 	for i := 0; i < len(firstString); i++ {
@@ -237,8 +237,8 @@ func areAnagramsNested(firstString, secondString string) bool {
 // side-by-side to determine if they're an anagram of each other.
 // Theoretical time: O(N log N + M log M)
 func areAnagramsSorted(firstString, secondString string) bool {
-	firstRunes := []rune(strings.ReplaceAll(firstString, " ", ""))
-	secondRunes := []rune(strings.ReplaceAll(secondString, " ", ""))
+	firstRunes := []rune(strings.ToLower(strings.ReplaceAll(firstString, " ", "")))
+	secondRunes := []rune(strings.ToLower(strings.ReplaceAll(secondString, " ", "")))
 	sort.Slice(firstRunes, func(i int, j int) bool {
 		return firstRunes[i] < firstRunes[j]
 	})
@@ -263,6 +263,8 @@ func areAnagramsSorted(firstString, secondString string) bool {
 // char in a hash map and comparing the resulting hash maps' number of each char.
 // It takes N+M steps.
 func areAnagrams(firstString, secondString string) bool {
+	firstString = strings.ToLower(strings.ReplaceAll(firstString, " ", ""))
+	secondString = strings.ToLower(strings.ReplaceAll(secondString, " ", ""))
 	firstStringMap := make(map[uint8]int)
 	secondStringMap := make(map[uint8]int)
 

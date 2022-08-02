@@ -273,3 +273,34 @@ func TestIncreasingTriplets(t *testing.T) {
 		})
 	}
 }
+
+func BenchmarkAreAnagramsNested(b *testing.B) {
+	string1 := "William Shakespeare"
+	string2 := "I am a weakish speller"
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		areAnagramsNested(string1, string2)
+	}
+}
+
+func BenchmarkAreAnagramsSorted(b *testing.B) {
+	string1 := "William Shakespeare"
+	string2 := "I am a weakish speller"
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		areAnagramsSorted(string1, string2)
+	}
+}
+
+func BenchmarkAreAnagrams(b *testing.B) {
+	string1 := "William Shakespeare"
+	string2 := "I am a weakish speller"
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		areAnagrams(string1, string2)
+	}
+
+}
