@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/google/go-cmp/cmp"
+	"golang.org/x/exp/constraints"
 )
 
 // twoSum1 determines if the sum of any two numbers in a given list
@@ -284,4 +285,36 @@ func areAnagrams(firstString, secondString string) bool {
 	}
 
 	return cmp.Equal(firstStringMap, secondStringMap)
+}
+
+// groupArray takes a slice of a type that can be ordered and groups similar values.
+// O(N) time.
+func groupArray[T constraints.Ordered](array []T) []T {
+	hashMap := make(map[T]int)
+	result := make([]T, 0, len(array))
+
+	// Store values of each string in a hash table.
+	for _, v := range array {
+		hashMap[v]++
+	}
+
+	// Iterate over the hashmap and populate the result slice
+	// with the correct number of each value.
+	for val, count := range hashMap {
+		for i := 0; i < count; i++ {
+			result = append(result, val)
+		}
+	}
+
+	return result
+}
+
+// groupArraySort  takes a slice of a type that can be ordered and groups similar values.
+// It uses Go's sort.Slice Method, and is O(log N)
+func groupArraySort[T constraints.Ordered](array []T) []T {
+	sort.Slice(array, func(i, j int) bool {
+		return array[i] < array[j]
+	})
+
+	return array
 }

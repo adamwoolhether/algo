@@ -1476,3 +1476,7 @@ Another optimization technique is to use a different data structure.
 Write a func that compares two strings side by side, determining if they're an anagram of one another or not. If we used the 
 [anagramsOf](recursion.go) function, but this would bring a O(N!) time. See [xtraOptimizationTechniques.go](xtraOptimizationTechniques.go) for optimizations.
 #### Group Sorting
+Assuming an array contains several different values, and we want to reorder the data so that the same values are grouped
+together. ex: an array `["a", "c", "d", "b", "b", "c", "a", "d", "c", "b", "a", "d"]`, we want to sort it so it becomes
+`["c", "c", "c", "a", "a", "a", "d", "d", "d", "b", "b", "b"]`.  
+Fasted sorting algo take O(N log N), but we'll aim for O(N).

@@ -304,3 +304,35 @@ func BenchmarkAreAnagrams(b *testing.B) {
 	}
 
 }
+
+func TestGroupArray(t *testing.T) {
+	input := []string{"a", "c", "d", "b", "b", "c", "a", "d", "c", "b", "a", "d"}
+
+	result := groupArray(input)
+
+	if len(result) != len(input) {
+		t.Errorf("exp same length. input len=%d, got=%d", len(input), len(result))
+	}
+
+	for i := 0; i < len(result)-2; i += 3 {
+		if (result[i] != result[i+1]) || (result[i] != result[i+2]) {
+			t.Errorf("chars aren't grouped together, result: %v", result)
+		}
+	}
+}
+
+func BenchmarkGroupArray(b *testing.B) {
+	input := []string{"a", "c", "d", "b", "b", "c", "a", "d", "c", "b", "a", "d", "a", "c", "d", "b", "b", "c", "a", "d", "c", "b", "a", "d", "a", "c", "d", "b", "b", "c", "a", "d", "c", "b", "a", "d"}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		groupArray(input)
+	}
+}
+
+func BenchmarkGroupArraySort(b *testing.B) {
+	input := []string{"a", "c", "d", "b", "b", "c", "a", "d", "c", "b", "a", "d", "a", "c", "d", "b", "b", "c", "a", "d", "c", "b", "a", "d", "a", "c", "d", "b", "b", "c", "a", "d", "c", "b", "a", "d"}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		groupArraySort(input)
+	}
+}
