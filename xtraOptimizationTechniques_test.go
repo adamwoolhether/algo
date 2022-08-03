@@ -321,18 +321,30 @@ func TestGroupArray(t *testing.T) {
 	}
 }
 
+var groupArrayTests = []struct {
+	name  string
+	input []string
+}{
+	{"short", []string{"a", "c", "d", "b", "b", "c", "a", "d", "c", "b", "a", "d"}},
+	{"long", []string{"a", "c", "d", "b", "b", "c", "a", "d", "c", "b", "a", "d", "a", "c", "d", "b", "b", "c", "a", "d", "c", "b", "a", "d", "a", "c", "d", "b", "b", "c", "a", "d", "c", "b", "a", "d"}},
+}
+
 func BenchmarkGroupArray(b *testing.B) {
-	input := []string{"a", "c", "d", "b", "b", "c", "a", "d", "c", "b", "a", "d", "a", "c", "d", "b", "b", "c", "a", "d", "c", "b", "a", "d", "a", "c", "d", "b", "b", "c", "a", "d", "c", "b", "a", "d"}
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		groupArray(input)
+	for _, tt := range groupArrayTests {
+		b.Run(tt.name, func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				groupArray(tt.input)
+			}
+		})
 	}
 }
 
 func BenchmarkGroupArraySort(b *testing.B) {
-	input := []string{"a", "c", "d", "b", "b", "c", "a", "d", "c", "b", "a", "d", "a", "c", "d", "b", "b", "c", "a", "d", "c", "b", "a", "d", "a", "c", "d", "b", "b", "c", "a", "d", "c", "b", "a", "d"}
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		groupArraySort(input)
+	for _, tt := range groupArrayTests {
+		b.Run(tt.name, func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				groupArraySort(tt.input)
+			}
+		})
 	}
 }
