@@ -318,3 +318,55 @@ func groupArraySort[T constraints.Ordered](array []T) []T {
 
 	return array
 }
+
+// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Exercises
+
+// 1
+
+type Athletes struct {
+	FirstName string
+	LastName  string
+	Team      string
+}
+
+// multisportAthletes will take two lists of athletes for a certain sport, returning
+// a list of athletes that play on both sports.
+// O(N+M)
+func findMultisportAthletes(array1, array2 []Athletes) []string {
+	athletesMap := make(map[string]struct{}, len(array1))
+	multisportAthletes := []string(nil)
+
+	for _, athlete := range array1 {
+		fullName := fmt.Sprintf("%s %s", athlete.FirstName, athlete.LastName)
+		athletesMap[fullName] = struct{}{}
+	}
+
+	for _, athlete := range array2 {
+		fullName := fmt.Sprintf("%s %s", athlete.FirstName, athlete.LastName)
+		if _, ok := athletesMap[fullName]; ok {
+			multisportAthletes = append(multisportAthletes, fullName)
+		}
+	}
+
+	return multisportAthletes
+}
+
+// findMultisportAthletesInefficient will take two lists of athletes for a certain sport, returning
+// a list of athletes that play on both sports.
+// O(N * M)
+func findMultisportAthletesInefficient(array1, array2 []Athletes) []string {
+	multisportAthletes := []string(nil)
+
+	for _, athlete1 := range array1 {
+		name1 := fmt.Sprintf("%s %s", athlete1.FirstName, athlete1.LastName)
+		for _, athlete2 := range array2 {
+			name2 := fmt.Sprintf("%s %s", athlete2.FirstName, athlete2.LastName)
+			if name1 == name2 {
+				multisportAthletes = append(multisportAthletes, name1)
+			}
+		}
+	}
+
+	return multisportAthletes
+}

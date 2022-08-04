@@ -3,6 +3,8 @@ package algo
 import (
 	"fmt"
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 /*
@@ -347,4 +349,69 @@ func BenchmarkGroupArraySort(b *testing.B) {
 			}
 		})
 	}
+}
+
+// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Exercises
+
+// Exercise 1
+
+func TestFindMultisportAthletes(t *testing.T) {
+	bastketballPlayers, footballPlayers := generateAthletes()
+
+	exp := []string{"Jill Huang", "Wanda Vakulskas"}
+
+	result := findMultisportAthletes(bastketballPlayers, footballPlayers)
+
+	if !cmp.Equal(result, exp) {
+		t.Errorf("Exp slice %v, got %v", exp, result)
+	}
+}
+
+func BenchmarkFindMultisportAthletes(b *testing.B) {
+	bastketballPlayers, footballPlayers := generateAthletes()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = findMultisportAthletes(bastketballPlayers, footballPlayers)
+	}
+}
+
+func TestFindMultisportAthletesInefficient(t *testing.T) {
+	bastketballPlayers, footballPlayers := generateAthletes()
+
+	exp := []string{"Jill Huang", "Wanda Vakulskas"}
+
+	result := findMultisportAthletesInefficient(bastketballPlayers, footballPlayers)
+
+	if !cmp.Equal(result, exp) {
+		t.Errorf("Exp slice %v, got %v", exp, result)
+	}
+}
+
+func BenchmarkFindMultisportAthletesInefficient(b *testing.B) {
+	bastketballPlayers, footballPlayers := generateAthletes()
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = findMultisportAthletesInefficient(bastketballPlayers, footballPlayers)
+	}
+}
+
+func generateAthletes() ([]Athletes, []Athletes) {
+	basketBallPlayers := []Athletes{
+		{FirstName: "Jill", LastName: "Huang", Team: "Gators"},
+		{FirstName: "Janko", LastName: "Barton", Team: "Sharks"},
+		{FirstName: "Wanda", LastName: "Vakulskas", Team: "Gators"},
+		{FirstName: "Jill", LastName: "Moloney", Team: "Gators"},
+		{FirstName: "Luuk", LastName: "Watkins", Team: "Gators"},
+	}
+
+	footballPlayers := []Athletes{
+		{FirstName: "Hanzla", LastName: "Radosti", Team: "32ers"},
+		{FirstName: "Tina", LastName: "Watkins", Team: "Barleycorns"},
+		{FirstName: "Alex", LastName: "Patel", Team: "32ers"},
+		{FirstName: "Jill", LastName: "Huang", Team: "Barleycorns"},
+		{FirstName: "Wanda", LastName: "Vakulskas", Team: "Barleycorns"},
+	}
+
+	return basketBallPlayers, footballPlayers
 }
