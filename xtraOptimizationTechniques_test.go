@@ -415,3 +415,45 @@ func generateAthletes() ([]Athletes, []Athletes) {
 
 	return basketBallPlayers, footballPlayers
 }
+
+// 2
+
+func TestFindMissingNum(t *testing.T) {
+	tests := []struct {
+		input []int
+		exp   int
+	}{
+		{[]int{1, 2, 3, 4, 5, 6}, 0},
+		{[]int{0, 2, 3, 4, 5, 6}, 1},
+		{[]int{0, 1, 3, 4, 5, 6}, 2},
+		{[]int{0, 1, 2, 4, 5, 6}, 3},
+		{[]int{0, 1, 2, 3, 5, 6}, 4},
+		{[]int{0, 1, 2, 3, 4, 6}, 5},
+	}
+
+	for _, tt := range tests {
+		t.Run(fmt.Sprintf("%d", tt.exp), func(t *testing.T) {
+			if res := findMissingNum(tt.input); res != tt.exp {
+				t.Errorf("exp %d, got %d", tt.exp, res)
+			}
+		})
+	}
+}
+
+func TestFindGreatestProfit(t *testing.T) {
+	prices := []int{10, 7, 5, 8, 11, 2, 6}
+	exp := 6
+
+	if res := findGreatestProfit(prices); res != exp {
+		t.Errorf("Exp %d, got %d", exp, res)
+	}
+}
+
+func TestGreatestProduct(t *testing.T) {
+	input := []int{5, -10, -6, 9, 4}
+	exp := 60
+
+	if res := greatestProduct(input); res != exp {
+		t.Errorf("Exp %d, got %d", exp, res)
+	}
+}

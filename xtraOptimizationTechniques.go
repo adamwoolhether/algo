@@ -370,3 +370,76 @@ func findMultisportAthletesInefficient(array1, array2 []Athletes) []string {
 
 	return multisportAthletes
 }
+
+// 2
+
+// findMissingNum will determine if any number in an incremented
+// array of numbers is missing.
+// O(N)
+func findMissingNum(array []int) int {
+	shouldBe, actualSum := 0, 0
+	for i, v := range array {
+		shouldBe += i + 1
+		actualSum += v
+	}
+
+	diff := shouldBe - actualSum
+
+	return diff
+}
+
+// 3
+// findGreatestPrice will determine the greatest profit possible to make a single
+// buy and sell transaction for a stock.
+// O(N)
+func findGreatestProfit(prices []int) int {
+	buyPrice := prices[0]
+	greatestProfit := 0
+
+	for _, price := range prices {
+		potentialProfit := price - buyPrice
+
+		if price < buyPrice {
+			buyPrice = price
+		} else if potentialProfit > greatestProfit {
+			greatestProfit = potentialProfit
+		}
+	}
+
+	return greatestProfit
+}
+
+// greatestProduct will find the greatest possible product of any two numbers in an array.
+// O(N)
+func greatestProduct(nums []int) int {
+	greatest := -math.MaxInt64
+	secondGreatest := -math.MaxInt64
+
+	lowest := math.MaxInt64
+	secondLowest := math.MaxInt64
+
+	for _, num := range nums {
+		if num >= greatest {
+			secondGreatest = greatest
+			greatest = num
+		} else if num > secondGreatest {
+			secondGreatest = num
+		}
+
+		if num <= lowest {
+			secondLowest = lowest
+			lowest = num
+		} else if num > lowest && num < secondLowest {
+			secondLowest = num
+		}
+	}
+
+	greatestProductHighest := greatest * secondGreatest
+	greatestProductLowest := lowest * secondLowest
+
+	if greatestProductHighest > greatestProductLowest {
+		return greatestProductHighest
+	}
+
+	return greatestProductLowest
+}
