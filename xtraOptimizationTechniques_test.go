@@ -487,3 +487,19 @@ func TestSortTemperatures(t *testing.T) {
 
 	fmt.Println(result)
 }
+
+func TestLongestSequenceLength(t *testing.T) {
+	tests := []struct {
+		input []int
+		exp   int
+	}{
+		{[]int{10, 5, 12, 3, 55, 30, 4, 11, 2}, 4},
+		{[]int{19, 13, 15, 12, 18, 14, 17, 11}, 5},
+	}
+
+	for _, tt := range tests {
+		if result := longestSequenceLength(tt.input); result != tt.exp {
+			t.Errorf("Exp %d, got %d", tt.exp, result)
+		}
+	}
+}

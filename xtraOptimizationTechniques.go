@@ -445,6 +445,8 @@ func greatestProduct(nums []int) int {
 	return greatestProductLowest
 }
 
+// sortTemperatures will sort a list of given temperatures in O(N) time.
+// We can do this because we know the range of temps is 97.0-99.0
 func sortTemperatures(temps []float64) []float64 {
 	hashMap := make(map[float64]int)
 
@@ -473,4 +475,47 @@ func sortTemperatures(temps []float64) []float64 {
 	}
 
 	return sortedArray
+}
+
+// longestSequenceLength finds the length of the longest sequence of numbers
+// in a given array.
+// O (3N) = O(N)
+func longestSequenceLength(nums []int) int {
+	hashMap := make(map[int]bool, len(nums))
+	greatestSequenceLength := 0
+
+	// Populate hash map with nubers as keys.
+	for _, num := range nums {
+		hashMap[num] = true
+	}
+
+	// Iterate over each number in the array.
+	for _, num := range nums {
+		// Determine if the number is the first in the sequence(there isn't a lower number).
+		if _, ok := hashMap[num-1]; !ok {
+			// Start counting the length of the current sequence,
+			// starting with current number. As the first number,
+			// the length starts at 1.
+			currentLength := 1
+
+			// Establish a current number to use in the loop below.
+			currentNumber := num
+
+			// Run loop as long as there's a next number in the sequence.
+			for hashMap[currentNumber+1] {
+				// Move on to next num in sequence.
+				currentNumber++
+
+				// Increase length of sequence by 1.
+				currentLength++
+
+				// Greedily keep track of greatest sequence length.
+				if currentLength > greatestSequenceLength {
+					greatestSequenceLength = currentLength
+				}
+			}
+		}
+	}
+
+	return greatestSequenceLength
 }
