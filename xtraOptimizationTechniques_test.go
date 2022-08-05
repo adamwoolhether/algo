@@ -440,6 +440,23 @@ func TestFindMissingNum(t *testing.T) {
 	}
 }
 
+func BenchmarkFindMissingNum(b *testing.B) {
+	input := []int{1, 2, 3, 4, 5, 6}
+	// 4, 6, 8, 2, 3, 1, 5, 9, 7, 0
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = findMissingNum(input)
+	}
+}
+func BenchmarkFindMissingNumber(b *testing.B) {
+	input := []int{1, 2, 3, 4, 5, 6}
+	// 4, 6, 8, 2, 3, 1, 5, 9, 7, 0
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = findMissingNumber(input)
+	}
+}
+
 func TestFindGreatestProfit(t *testing.T) {
 	prices := []int{10, 7, 5, 8, 11, 2, 6}
 	exp := 6
@@ -456,4 +473,17 @@ func TestGreatestProduct(t *testing.T) {
 	if res := greatestProduct(input); res != exp {
 		t.Errorf("Exp %d, got %d", exp, res)
 	}
+}
+
+func TestSortTemperatures(t *testing.T) {
+	input := []float64{98.6, 98.0, 97.1, 99.0, 98.9, 97.8, 98.5, 98.2, 98.0, 97.1}
+	exp := []float64{97.1, 97.1, 97.8, 98, 98, 98.2, 98.5, 98.6, 98.9, 99}
+
+	result := sortTemperatures(input)
+
+	if diff := cmp.Diff(exp, result); diff != "" {
+		t.Errorf("Unexpected result, diff: %v", diff)
+	}
+
+	fmt.Println(result)
 }

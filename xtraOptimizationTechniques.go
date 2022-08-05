@@ -374,7 +374,8 @@ func findMultisportAthletesInefficient(array1, array2 []Athletes) []string {
 // 2
 
 // findMissingNum will determine if any number in an incremented
-// array of numbers is missing.
+// array of numbers is missing. compare this with findMissingNumber
+// in partitioning.go, which uses sort.
 // O(N)
 func findMissingNum(array []int) int {
 	shouldBe, actualSum := 0, 0
@@ -442,4 +443,34 @@ func greatestProduct(nums []int) int {
 	}
 
 	return greatestProductLowest
+}
+
+func sortTemperatures(temps []float64) []float64 {
+	hashMap := make(map[float64]int)
+
+	// Populate the map with occurrences of temps.
+	for _, temp := range temps {
+		hashMap[temp]++
+	}
+
+	sortedArray := make([]float64, 0, len(temps))
+
+	// Multiply temps by 10 in order to increment temp by a whole number during
+	// the loop to avoid floating-point errors.
+	// NOTE: is this needed?
+	temperature := float64(970)
+
+	for temperature <= 990 {
+		floatingTemp := temperature / 10.0
+		// Check if the map contains the current temp.
+		if v, ok := hashMap[floatingTemp]; ok {
+			// Populate the sortedArray with as many occurences of the current table.
+			for i := 0; i < v; i++ {
+				sortedArray = append(sortedArray, floatingTemp)
+			}
+		}
+		temperature++
+	}
+
+	return sortedArray
 }
