@@ -24,6 +24,10 @@ func TestLinter(t *testing.T) {
 			input: "func fail(arr ]string) { return } ",
 			exp:   false,
 		},
+		"emptyStack": {
+			input: "} }",
+			exp:   false,
+		},
 	}
 
 	for name, tc := range testCases {

@@ -19,14 +19,14 @@ func NewQueue[T any]() *Queue[T] {
 	}
 }
 
-func (q *Queue[T]) enqueue(v any) {
+func (q *Queue[T]) enqueue(v T) {
 	q.mu.Lock()
 	defer q.mu.Unlock()
 
 	q.data = append(q.data, v)
 }
 
-func (q *Queue[T]) dequeue() any {
+func (q *Queue[T]) dequeue() T {
 	q.mu.Lock()
 	defer q.mu.Unlock()
 
@@ -41,7 +41,7 @@ func (q *Queue[T]) dequeue() any {
 	return v
 }
 
-func (q *Queue[T]) peak() any {
+func (q *Queue[T]) peak() T {
 	q.mu.RLock()
 	defer q.mu.RUnlock()
 
@@ -80,7 +80,7 @@ func (p *PrintManager) queuePrintJob(document string) {
 
 func (p *PrintManager) run(out io.Writer) {
 	for len(p.queue.data) > 0 {
-		printer(out, p.queue.dequeue().(string))
+		printer(out, p.queue.dequeue())
 	}
 }
 
