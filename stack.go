@@ -5,32 +5,32 @@ import (
 )
 
 // Stack uses an array as the underlying data structure.
-type Stack struct {
+type Stack[T any] struct {
 	mu   sync.RWMutex
-	data []any
+	data []T
 }
 
-func newStack() *Stack {
-	return &Stack{
+func NewStack[T any]() *Stack[T] {
+	return &Stack[T]{
 		mu:   sync.RWMutex{},
-		data: []any{},
+		data: []T{},
 	}
 }
 
-func (s *Stack) push(v any) {
+func (s *Stack[T]) Push(v T) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
 	s.data = append(s.data, v)
 }
 
-func (s *Stack) pop() any {
-	if len(s.data) == 0 {
-		return nil
-	}
-
+func (s *Stack[T]) Pop() T {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+
+	if len(s.data) == 0 {
+		return s.nilType()
+	}
 
 	v := s.data[len(s.data)-1]
 	s.data = s.data[:len(s.data)-1]
@@ -38,26 +38,43 @@ func (s *Stack) pop() any {
 	return v
 }
 
-func (s *Stack) peak() any {
-	if len(s.data) == 0 {
-		return nil
-	}
-
+func (s *Stack[T]) Peak() T {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 
+	if len(s.data) == 0 {
+		return s.nilType()
+	}
+
 	return s.data[len(s.data)-1]
+}
+
+func (s *Stack[T]) Size() int {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+
+	return len(s.data)
+}
+
+func (s *Stack[T]) IsEmpty() bool {
+	return s.Size() == 0
+}
+
+func (s *Stack[T]) nilType() T {
+	var t T
+
+	return t
 }
 
 // /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Usecase: linter
 
 type Linter struct {
-	stack *Stack
+	stack *Stack[any]
 }
 
 func newLinter() *Linter {
-	return &Linter{stack: newStack()}
+	return &Linter{stack: NewStack[any]()}
 }
 func (l *Linter) lint(text string) bool {
 	brace := map[rune]rune{
@@ -69,9 +86,9 @@ func (l *Linter) lint(text string) bool {
 	for _, char := range text {
 		switch char {
 		case '(', '[', '{':
-			l.stack.push(char)
+			l.stack.Push(char)
 		case ')', ']', '}':
-			poppedOpenBrace := l.stack.pop()
+			poppedOpenBrace := l.stack.Pop()
 
 			// If the stack was empty.
 			if poppedOpenBrace == nil {
@@ -86,7 +103,7 @@ func (l *Linter) lint(text string) bool {
 	}
 
 	// There are remaining chars in the stack, it lacks a closing brace.
-	if l.stack.peak() != nil {
+	if l.stack.Peak() != nil {
 		return false
 	}
 
