@@ -7,32 +7,32 @@ import (
 )
 
 // Queue uses an array as the underlying data structure.
-type Queue struct {
+type Queue[T any] struct {
 	mu   sync.RWMutex
-	data []any
+	data []T
 }
 
-func NewQueue() *Queue {
-	return &Queue{
+func NewQueue[T any]() *Queue[T] {
+	return &Queue[T]{
 		mu:   sync.RWMutex{},
-		data: []any{},
+		data: []T{},
 	}
 }
 
-func (q *Queue) enqueue(v any) {
+func (q *Queue[T]) enqueue(v any) {
 	q.mu.Lock()
 	defer q.mu.Unlock()
 
 	q.data = append(q.data, v)
 }
 
-func (q *Queue) dequeue() any {
-	if len(q.data) == 0 {
-		return nil
-	}
-
+func (q *Queue[T]) dequeue() any {
 	q.mu.Lock()
 	defer q.mu.Unlock()
+
+	if q.isEmpty() {
+		return q.nilType()
+	}
 
 	v := q.data[0]
 	// q.data[0] = nil
@@ -41,26 +41,37 @@ func (q *Queue) dequeue() any {
 	return v
 }
 
-func (q *Queue) peak() any {
-	if len(q.data) == 0 {
-		return nil
-	}
-
+func (q *Queue[T]) peak() any {
 	q.mu.RLock()
 	defer q.mu.RUnlock()
 
+	if q.isEmpty() {
+		return q.nilType()
+	}
+
 	return q.data[0]
+}
+
+func (q *Queue[T]) isEmpty() bool {
+	// no locking, as this is internal and should be done by caller.
+	return len(q.data) == 0
+}
+
+func (q *Queue[T]) nilType() T {
+	var t T
+
+	return t
 }
 
 // /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Usecase: print manager
 
 type PrintManager struct {
-	queue *Queue
+	queue *Queue[string]
 }
 
 func newPrintMgr() *PrintManager {
-	return &PrintManager{queue: NewQueue()}
+	return &PrintManager{queue: NewQueue[string]()}
 }
 
 func (p *PrintManager) queuePrintJob(document string) {
