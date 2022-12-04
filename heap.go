@@ -6,7 +6,8 @@ import "golang.org/x/exp/constraints"
 Current implementation returns T's zero-value if there is no data in the
 heap's array. A production setting would probably benefit with another
 way to handle this (bool, err, panic).
-Also, as always, concurrency safety would be needed!.
+Also, as always, concurrency safety would be needed! See stack.go for use of RWMutex,
+which could easily be implemented here.
 */
 
 // heap represents an array-backed heap data structure.
