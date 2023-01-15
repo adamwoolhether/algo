@@ -460,7 +460,7 @@ We don't have to understand how the function calling works so solve the problem,
 #### Top-Down Thought Process
 1. Imagine the function you're writing has already been implemented before.
 2. Identify the subproblem of the problem.
-3. See what happens when you call the function on the subpoblem and go from there.
+3. See what happens when you call the function on the sub-problem and go from there.
 
 #### Examples
 _Array Sum_  
